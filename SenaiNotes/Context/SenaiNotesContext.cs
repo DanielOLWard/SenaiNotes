@@ -22,7 +22,7 @@ public partial class SenaiNotesContext : DbContext
 
     public virtual DbSet<Tag> Tags { get; set; }
 
-    public virtual DbSet<TagNotas> TagNota { get; set; }
+    public virtual DbSet<TagNota> TagNota { get; set; }
 
     public virtual DbSet<TipoUsuario> TipoUsuarios { get; set; }
 
@@ -72,7 +72,7 @@ public partial class SenaiNotesContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<TagNotas>(entity =>
+        modelBuilder.Entity<TagNota>(entity =>
         {
             entity.HasKey(e => e.TagNotasId).HasName("PK__TagNotas__F3BA09B431CFE34C");
 

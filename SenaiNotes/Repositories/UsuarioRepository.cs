@@ -39,7 +39,17 @@ namespace SenaiNotes.Repositories
 
         public ListarusuarioViewModel BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return _context.Usuarios
+                .Select(u => new ListarusuarioViewModel
+                {
+                    UsuarioId = u.UsuarioId,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    Telefone = u.Telefone,
+                    DataCadastro = u.DataCadastro,
+                    TipoUsuarioId = u.TipoUsuarioId,
+                })
+                .FirstOrDefault(u => u.UsuarioId == id);
         }
 
         public void Cadastrar(CadastrarUsuarioDto usuarioDto)
