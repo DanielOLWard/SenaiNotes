@@ -12,6 +12,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SenaiNotesContext>();
 builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
+builder.Services.AddTransient<ITagRepository, TagRepository>();
+builder.Services.AddTransient<ITagNotasRepository, TagNotasRepository>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
