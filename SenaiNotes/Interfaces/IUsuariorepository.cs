@@ -10,9 +10,11 @@ namespace SenaiNotes.Interfaces
 
         ListarusuarioViewModel BuscarPorId(int id);
 
+        Usuario Login(string email, string senha);
+
         void Cadastrar(CadastrarUsuarioDto usuarioDto);
 
-        Usuario Atualizar (int id, AtualizarusuarioDto UsuarioAtualizado);
+        void Atualizar (int id, AtualizarusuarioDto UsuarioAtualizado);
 
         Usuario Deletar(int id);
     }

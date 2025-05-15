@@ -1,3 +1,5 @@
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using SenaiNotes.Context;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Repositories;
@@ -11,17 +13,49 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SenaiNotesContext>();
 builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "SenaiNotes",
+            ValidAudience = "SenaiNotes",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("minha-chave-ultra-mega-secreta-de-seguranca-do-projeto-senai-notes-o-projeto-final-do-senai-o-ultimo-mesmo-eu-juro"))
+        };
+    });
+
+builder.Services.AddAuthentication();
+
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(
+            name : "minhasOrigens",
+            policy =>
+            { //TODO
+                policy.WithOrigins("http://localhost:5500");
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+            }
+        );
+    });
+
 var app = builder.Build();
 
-app.UseSwagger();
+app.UseCors("minhasOrigens");
 
+app.MapControllers();
+
+app.UseSwagger();
 app.UseSwaggerUI(options => // Faz o Swagger abrir direto
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
 });
-
-app.MapControllers();
 
 app.UseAuthentication(); 
 

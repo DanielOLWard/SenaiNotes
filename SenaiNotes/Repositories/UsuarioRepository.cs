@@ -3,6 +3,7 @@ using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.Services;
 using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Repositories
@@ -16,9 +17,24 @@ namespace SenaiNotes.Repositories
             _context = context;
         }
 
-        public Usuario Atualizar(int id, AtualizarusuarioDto UsuarioAtualizado)
+        public void Atualizar(int id, AtualizarusuarioDto usuarioAtualizado)
         {
-            throw new NotImplementedException();
+            var usuarioEncontrado = _context.Usuarios.Find(id);
+
+            var passwordSercvice = new PasswordService();
+
+            if (usuarioEncontrado == null) throw new ArgumentNullException("Usuario nao Encontrado");
+
+            usuarioEncontrado.Nome = usuarioAtualizado.Nome;
+            usuarioEncontrado.Email = usuarioAtualizado.Email;
+            usuarioEncontrado.Senha = usuarioAtualizado.Senha;
+            usuarioEncontrado.DataAtualizacao = usuarioAtualizado.DataAtualizacao;
+            usuarioEncontrado.Telefone = usuarioAtualizado.Telefone;
+            usuarioEncontrado.TipoUsuarioId = usuarioAtualizado.TipoUsuarioId;
+
+            usuarioEncontrado.Senha = passwordSercvice.HashPassword(usuarioEncontrado);
+
+            _context.SaveChanges();
         }
 
         public ListarusuarioViewModel BuscarPorId(int id)
@@ -28,6 +44,8 @@ namespace SenaiNotes.Repositories
 
         public void Cadastrar(CadastrarUsuarioDto usuarioDto)
         {
+            var passwordService = new PasswordService();
+
             var usuarioCadastrado = new Usuario
             {
                 Nome = usuarioDto.Nome,
@@ -37,6 +55,8 @@ namespace SenaiNotes.Repositories
                 DataCadastro = usuarioDto.DataCadastro,
                 TipoUsuarioId = usuarioDto.TipoUsuarioId
             };
+
+            usuarioCadastrado.Senha = passwordService.HashPassword(usuarioCadastrado);
 
             _context.Usuarios.Add(usuarioCadastrado);
 
@@ -69,6 +89,11 @@ namespace SenaiNotes.Repositories
                     TipoUsuarioId = u.TipoUsuarioId,
                 })
                 .ToListAsync();
+        }
+
+        public Usuario Login(string email, string senha)
+        {
+            throw new NotImplementedException();
         }
     }
 }
