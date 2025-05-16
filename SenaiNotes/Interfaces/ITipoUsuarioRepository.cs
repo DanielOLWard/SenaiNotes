@@ -13,6 +13,6 @@ namespace SenaiNotes.Interfaces
 
         void Atualizar(TipoUsuario tipoUsuario, int id);
 
-        TipoUsuario Deletar (int  id);
+        void Deletar (int  id);
     }
 }

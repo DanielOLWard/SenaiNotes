@@ -15,6 +15,7 @@ builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
 builder.Services.AddTransient<INotaRepository, NotaRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 builder.Services.AddTransient<ITagNotasRepository, TagNotasRepository>();
+builder.Services.AddTransient<ITipoUsuarioRepository, TipoUsuarioRepository>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>

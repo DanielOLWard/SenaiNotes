@@ -7,7 +7,7 @@ public partial class TipoUsuario
 {
     public int TipoUsuarioId { get; set; }
 
-    public string Descricao { get; set; } = null!;
+    public string? Descricao { get; set; }
 
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

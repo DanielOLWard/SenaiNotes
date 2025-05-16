@@ -9,13 +9,15 @@ public partial class Nota
 
     public string Titulo { get; set; } = null!;
 
-    public string Subtitulo { get; set; } = null!;
-
     public string ConteudoNotas { get; set; } = null!;
 
     public int? UsuarioId { get; set; }
 
-    public virtual ICollection<Lixeira> Lixeiras { get; set; } = new List<Lixeira>();
+    public bool? Lixeira { get; set; }
+
+    public string? Imagem { get; set; }
+
+    public bool? Arquivado { get; set; }
 
     public virtual ICollection<TagNota> TagNota { get; set; } = new List<TagNota>();
 
