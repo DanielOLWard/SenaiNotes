@@ -11,9 +11,11 @@ public partial class SenaiNotesContext : DbContext
     {
     }
 
-    public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options)
+    private IConfiguration _configuration;
+    public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options, IConfiguration config)
         : base(options)
     {
+        _configuration = config;
     }
 
     public virtual DbSet<Lixeira> Lixeiras { get; set; }
@@ -29,8 +31,10 @@ public partial class SenaiNotesContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=NOTE12-S28\\SQLEXPRESS;Initial Catalog=SenaiNotes;User Id=sa;Password=Senai@134;TrustServerCertificate=true;");
+    {
+        var con = _configuration.GetConnectionString("DefaultConecction");
+        optionsBuilder.UseSqlServer(con);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
