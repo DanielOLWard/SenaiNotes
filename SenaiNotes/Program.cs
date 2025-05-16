@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SenaiNotesContext>();
 builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
-builder.Services.AddTransient<INotaRepository, NotaRepository>();
+//builder.Services.AddTransient<INotaRepository, NotaRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 builder.Services.AddTransient<ITagNotasRepository, TagNotasRepository>();
 
@@ -31,13 +31,25 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(
+            name: "minhasOrigens",
+            policy =>
+            {
+                // TODO
+                policy.WithOrigins("http://localhost:5500");
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+            });
+    });
+
 builder.Services.AddAuthentication();
 
 var app = builder.Build();
 
 app.UseCors("minhasOrigens");
-
-app.MapControllers();
 
 app.UseSwagger();
 app.UseSwaggerUI(options => // Faz o Swagger abrir direto
@@ -48,6 +60,8 @@ app.UseSwaggerUI(options => // Faz o Swagger abrir direto
 
 app.UseAuthentication(); 
 
-app.UseAuthorization(); 
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

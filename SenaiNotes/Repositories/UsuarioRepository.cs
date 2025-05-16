@@ -39,7 +39,17 @@ namespace SenaiNotes.Repositories
 
         public ListarusuarioViewModel BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return _context.Usuarios
+                .Select(u => new ListarusuarioViewModel
+                {
+                    UsuarioId = u.UsuarioId,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    Telefone = u.Telefone,
+                    DataCadastro = u.DataCadastro,
+                    TipoUsuarioId = u.TipoUsuarioId,
+                })
+                .FirstOrDefault(u => u.UsuarioId == id);
         }
 
         public void Cadastrar(CadastrarUsuarioDto usuarioDto)
@@ -93,7 +103,17 @@ namespace SenaiNotes.Repositories
 
         public Usuario Login(string email, string senha)
         {
-            throw new NotImplementedException();
+            var usuarioEncontrado = _context.Usuarios.FirstOrDefault(u => u.Email == email);
+
+            if (usuarioEncontrado == null) return null;
+
+            var passwordService = new PasswordService();
+
+            var resultado = passwordService.VerificarSenha(usuarioEncontrado, senha);
+
+            if (resultado == true) return usuarioEncontrado;
+
+            return null;
         }
     }
 }

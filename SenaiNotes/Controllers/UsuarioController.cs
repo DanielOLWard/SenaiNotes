@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Services;
+using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Controllers
 {
@@ -60,6 +61,28 @@ namespace SenaiNotes.Controllers
             {
                 return NotFound("Usuario nao Encontrado!!");
             }
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult ListarPorId (int id)
+        {
+            ListarusuarioViewModel usuario = _usuarioRepository.BuscarPorId(id);
+
+            if (usuario == null) return NotFound("Usuario nao Encontrado!!");
+
+            return Ok(usuario);
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login (LoginDto login)
+        {
+            var usuario = _usuarioRepository.Login(login.Email, login.Senha);
+
+            if (usuario == null) return Unauthorized("Email ou Senha invalidos");
+
+            var tokenService = new TokenService();
+
+            return Ok("Login efetuado com Sucesso!!");
         }
     }
 }
