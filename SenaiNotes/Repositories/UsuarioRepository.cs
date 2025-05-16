@@ -103,7 +103,17 @@ namespace SenaiNotes.Repositories
 
         public Usuario Login(string email, string senha)
         {
-            throw new NotImplementedException();
+            var usuarioEncontrado = _context.Usuarios.FirstOrDefault(u => u.Email == email);
+
+            if (usuarioEncontrado == null) return null;
+
+            var passwordService = new PasswordService();
+
+            var resultado = passwordService.VerificarSenha(usuarioEncontrado, senha);
+
+            if (resultado == true) return usuarioEncontrado;
+
+            return null;
         }
     }
 }

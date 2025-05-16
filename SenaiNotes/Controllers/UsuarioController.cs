@@ -72,5 +72,17 @@ namespace SenaiNotes.Controllers
 
             return Ok(usuario);
         }
+
+        [HttpPost("login")]
+        public IActionResult Login (LoginDto login)
+        {
+            var usuario = _usuarioRepository.Login(login.Email, login.Senha);
+
+            if (usuario == null) return Unauthorized("Email ou Senha invalidos");
+
+            var tokenService = new TokenService();
+
+            return Ok("Login efetuado com Sucesso!!");
+        }
     }
 }
