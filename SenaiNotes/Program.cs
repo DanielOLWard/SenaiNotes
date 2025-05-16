@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SenaiNotesContext>();
 builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
-//builder.Services.AddTransient<INotaRepository, NotaRepository>();
+builder.Services.AddTransient<INotaRepository, NotaRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 builder.Services.AddTransient<ITagNotasRepository, TagNotasRepository>();
 
