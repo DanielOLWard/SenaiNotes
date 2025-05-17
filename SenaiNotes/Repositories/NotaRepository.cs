@@ -59,11 +59,16 @@ namespace SenaiNotes.Repositories
         {
             return _context.Notas.Select(n => new ListarNotaViewModel
             {
-                NotasId = n.NotasId,
                 Titulo = n.Titulo,
                 ConteudoNotas = n.ConteudoNotas,
             })
             .ToList();
+        }
+        //TEM Q FAZER O LISTAR TAGS NO LISTAR TODOS
+
+        public void Lixeira(bool nota)
+        {
+           
         }
     }
 }

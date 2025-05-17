@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.Repositories;
 
 namespace SenaiNotes.Controllers
 {
@@ -72,3 +74,5 @@ namespace SenaiNotes.Controllers
     } 
     
 }
+
+

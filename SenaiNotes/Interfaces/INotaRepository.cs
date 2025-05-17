@@ -1,4 +1,5 @@
-﻿using SenaiNotes.Dto;
+﻿using Microsoft.AspNetCore.Routing.Constraints;
+using SenaiNotes.Dto;
 using SenaiNotes.Models;
 using SenaiNotes.ViewModel;
 
@@ -11,6 +12,7 @@ namespace SenaiNotes.Interfaces
             void Cadastrar(CadastrarNotaDto nota);
             void Atualizar(int id, CadastrarNotaDto nota);
             void Deletar(int id);
+            void Lixeira(bool nota);
 
         }
     }
