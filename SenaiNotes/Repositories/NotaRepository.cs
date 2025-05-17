@@ -22,7 +22,6 @@ namespace SenaiNotes.Repositories
                 throw new NotImplementedException();
             }
             notaEncontrado.Titulo = nota.Titulo;
-            notaEncontrado.Subtitulo = nota.Subtitulo;
             notaEncontrado.ConteudoNotas = nota.ConteudoNotas;
             _context.SaveChanges();
         }
@@ -38,7 +37,6 @@ namespace SenaiNotes.Repositories
             var nota = new Nota
             {
                 Titulo = notaDto.Titulo,
-                Subtitulo = notaDto.Subtitulo,
                 ConteudoNotas = notaDto.ConteudoNotas,
                 UsuarioId = notaDto.UsuarioId,
             };
@@ -63,7 +61,6 @@ namespace SenaiNotes.Repositories
             {
                 NotasId = n.NotasId,
                 Titulo = n.Titulo,
-                Subtitulo = n.Subtitulo,
                 ConteudoNotas = n.ConteudoNotas,
             })
             .ToList();

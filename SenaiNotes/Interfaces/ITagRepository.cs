@@ -8,5 +8,7 @@ namespace SenaiNotes.Interfaces
         void Atualizar(int id, Tag tagNota);
         void Deletar(int id);
         void Cadastrar(Tag Tag);
+        Tag BuscarPorUsuario(Tag tagUser);
+
     }
 }

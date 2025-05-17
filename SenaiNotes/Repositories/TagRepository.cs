@@ -1,6 +1,7 @@
 ﻿using SenaiNotes.Context;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Repositories
 {
@@ -59,7 +60,16 @@ namespace SenaiNotes.Repositories
             {
                 throw new NotImplementedException();
             }
+
+        public Tag BuscarPorUsuario(Tag tagUser)
+        {
+            var TagsUser = _context.Tags
+                .ToList();
+               
+            return 
         }
+    }
+    }
  }
 
 

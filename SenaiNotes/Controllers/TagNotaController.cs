@@ -13,6 +13,7 @@ namespace SenaiNotes.Controllers
     public class TagNotaController : ControllerBase
     {
         private ITagNotasRepository _tagNotasRepository;
+        private SenaiNotesContext _context;
 
         public TagNotaController( ITagNotasRepository tagNotaRepository)
         {
@@ -71,7 +72,15 @@ namespace SenaiNotes.Controllers
             }
         }
 
+        [HttpGet("usuario/{Id}")]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
+        {
+            var tagnotas = await _context.TagNotas
+                .Where(t => t.TagsId == Id)
+                .ToListAsync();
 
+            return Ok(tagnotas);
+        }
 
     }
 }
