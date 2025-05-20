@@ -12,8 +12,7 @@ namespace SenaiNotes.Interfaces
             void Cadastrar(CadastrarNotaDto nota);
             void Atualizar(int id, CadastrarNotaDto nota);
             void Deletar(int id);
-            void Lixeira(bool nota);
-
+        void Arquivar(bool id);
         }
     }
 

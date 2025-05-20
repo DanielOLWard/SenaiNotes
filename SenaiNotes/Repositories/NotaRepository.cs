@@ -1,4 +1,5 @@
-﻿using SenaiNotes.Context;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
@@ -46,7 +47,7 @@ namespace SenaiNotes.Repositories
         }
         public void Deletar(int id)
         {
-            var notaEncontrado = _context.Notas.FirstOrDefault(n => n .NotasId == id); // Encontrar quem eu quero deletar
+            var notaEncontrado = _context.Notas.FirstOrDefault(n => n.NotasId == id); // Encontrar quem eu quero deletar
             if (notaEncontrado == null)
             {
                 throw new Exception("Nota nao encontrada");
@@ -65,11 +66,14 @@ namespace SenaiNotes.Repositories
             .ToList();
         }
         //TEM Q FAZER O LISTAR TAGS NO LISTAR TODOS
-
-        public void Lixeira(bool nota)
+        public void Arquivar(bool id)
         {
-           
+            var notaArquivada = _context.Notas.Find(id);
+            if (notaArquivada != null)
+            {
+               notaArquivada.Arquivado = !notaArquivada.Arquivado;
+                _context.SaveChanges();
+            }
         }
     }
 }
-

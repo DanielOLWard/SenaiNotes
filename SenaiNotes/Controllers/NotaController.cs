@@ -28,10 +28,18 @@ namespace SenaiNotes.Controllers
             }
             return Ok(nota);
         }
+
         [HttpGet]
         public IActionResult ListarNotas()
         {
             return Ok(_Notarepository.ListarTodos());
+        }
+
+        [HttpPut]
+        public IActionResult Arquivar(bool nota)
+        {
+            _Notarepository.Arquivar(nota);
+            return Ok();
         }
 
         [HttpPost]
