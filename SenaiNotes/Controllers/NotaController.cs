@@ -35,7 +35,7 @@ namespace SenaiNotes.Controllers
             return Ok(_Notarepository.ListarTodos());
         }
 
-        [HttpPut]
+        [HttpGet("/arquivar{id}")]
         public IActionResult Arquivar(bool nota)
         {
             _Notarepository.Arquivar(nota);
