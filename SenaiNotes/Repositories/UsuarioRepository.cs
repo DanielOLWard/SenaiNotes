@@ -28,9 +28,9 @@ namespace SenaiNotes.Repositories
             usuarioEncontrado.Nome = usuarioAtualizado.Nome;
             usuarioEncontrado.Email = usuarioAtualizado.Email;
             usuarioEncontrado.Senha = usuarioAtualizado.Senha;
-            usuarioEncontrado.DataAtualizacao = usuarioAtualizado.DataAtualizacao;
             usuarioEncontrado.Telefone = usuarioAtualizado.Telefone;
             usuarioEncontrado.TipoUsuarioId = usuarioAtualizado.TipoUsuarioId;
+            usuarioEncontrado.DataAtualizacao = DateTime.Now;
 
             usuarioEncontrado.Senha = passwordSercvice.HashPassword(usuarioEncontrado);
 
@@ -62,8 +62,9 @@ namespace SenaiNotes.Repositories
                 Email = usuarioDto.Email,
                 Senha = usuarioDto.Senha,
                 Telefone = usuarioDto.Telefone,
-                DataCadastro = usuarioDto.DataCadastro,
-                TipoUsuarioId = usuarioDto.TipoUsuarioId
+                TipoUsuarioId = usuarioDto.TipoUsuarioId,
+                DataCadastro = DateTime.Now,
+                DataAtualizacao = DateTime.Now
             };
 
             usuarioCadastrado.Senha = passwordService.HashPassword(usuarioCadastrado);

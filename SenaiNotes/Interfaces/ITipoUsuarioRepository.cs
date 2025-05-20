@@ -12,7 +12,7 @@ namespace SenaiNotes.Interfaces
 
         void Cadastrar(CadastrarTipoUsuarioDto tipoUsuario);
 
-        void Atualizar(CadastrarTipoUsuarioDto tipoUsuario, int id);
+        void Atualizar(int id, CadastrarTipoUsuarioDto tipoUsuarioAtualizado);
 
         void Deletar (int  id);
     }
