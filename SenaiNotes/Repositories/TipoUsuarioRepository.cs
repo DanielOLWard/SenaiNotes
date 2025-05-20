@@ -16,7 +16,7 @@ namespace SenaiNotes.Repositories
         {
             _context = context;
         }
-        public void Atualizar(CadastrarTipoUsuarioDto tipoUsuarioAtualizado, int id)
+        public void Atualizar(int id, CadastrarTipoUsuarioDto tipoUsuarioAtualizado)
         {
             var tipoUsuarioEncontrado = _context.TipoUsuarios.Find(id);
 

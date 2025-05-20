@@ -9,7 +9,7 @@ public partial class Nota
 
     public string Titulo { get; set; } = null!;
 
-    public string ConteudoNotas { get; set; } = null!;
+    public string? ConteudoNotas { get; set; }
 
     public int? UsuarioId { get; set; }
 

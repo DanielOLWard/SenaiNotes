@@ -18,6 +18,8 @@ public partial class SenaiNotesContext : DbContext
         _configuration = config;
     }
 
+    public virtual DbSet<AuditoriaGeral> AuditoriaGerals { get; set; }
+
     public virtual DbSet<Nota> Notas { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -29,19 +31,39 @@ public partial class SenaiNotesContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var con = _configuration.GetConnectionString("DefaultConecction");
-            optionsBuilder.UseSqlServer(con);
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=tcp:senainoteshenry.database.windows.net,1433;Initial Catalog=SenaiNotes;Persist Security Info=False;User ID=LoginDaniel;Password=senai@134;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AuditoriaGeral>(entity =>
+        {
+            entity.HasKey(e => e.IdAuditoria).HasName("PK__Auditori__7FD13FA06BA2C341");
+
+            entity.ToTable("AuditoriaGeral", tb => tb.HasTrigger("trg_audit_AuditoriaGeral"));
+
+            entity.Property(e => e.DataAcao).HasColumnType("datetime");
+            entity.Property(e => e.NomeTabela)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.TipoAcao)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Usuario)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Nota>(entity =>
         {
             entity.HasKey(e => e.NotasId).HasName("PK__Notas__494AC75BCEC1CBBB");
 
+            entity.ToTable(tb => tb.HasTrigger("trg_audit_Notas"));
+
             entity.Property(e => e.NotasId).HasColumnName("NotasID");
-            entity.Property(e => e.ConteudoNotas).HasColumnType("text");
+            entity.Property(e => e.ConteudoNotas)
+                .HasMaxLength(250)
+                .IsUnicode(false);
             entity.Property(e => e.Imagem).IsUnicode(false);
             entity.Property(e => e.Titulo)
                 .HasMaxLength(100)
@@ -56,6 +78,8 @@ public partial class SenaiNotesContext : DbContext
         {
             entity.HasKey(e => e.TagsId).HasName("PK__Tags__D4316BFC02F94603");
 
+            entity.ToTable(tb => tb.HasTrigger("trg_audit_Tags"));
+
             entity.Property(e => e.NomeTag)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -64,6 +88,8 @@ public partial class SenaiNotesContext : DbContext
         modelBuilder.Entity<TagNota>(entity =>
         {
             entity.HasKey(e => e.TagNotasId).HasName("PK__TagNotas__F3BA09B4293F8285");
+
+            entity.ToTable(tb => tb.HasTrigger("trg_audit_TagNotas"));
 
             entity.HasOne(d => d.Notas).WithMany(p => p.TagNota)
                 .HasForeignKey(d => d.NotasId)
@@ -78,7 +104,7 @@ public partial class SenaiNotesContext : DbContext
         {
             entity.HasKey(e => e.TipoUsuarioId).HasName("PK__TipoUsua__7F22C72253394714");
 
-            entity.ToTable("TipoUsuario");
+            entity.ToTable("TipoUsuario", tb => tb.HasTrigger("trg_audit_TipoUsuario"));
 
             entity.Property(e => e.Descricao)
                 .HasMaxLength(50)
@@ -88,6 +114,8 @@ public partial class SenaiNotesContext : DbContext
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.UsuarioId).HasName("PK__Usuarios__2B3DE7B805CB0410");
+
+            entity.ToTable(tb => tb.HasTrigger("trg_audit_usuario"));
 
             entity.HasIndex(e => e.Email, "UQ__Usuarios__A9D105345D8983BB").IsUnique();
 
