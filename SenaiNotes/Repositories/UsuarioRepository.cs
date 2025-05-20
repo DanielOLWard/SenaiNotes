@@ -74,17 +74,15 @@ namespace SenaiNotes.Repositories
             _context.SaveChanges();
         }
 
-        public Usuario Deletar(int id)
+        public void Deletar(int id)
         {
-            Usuario usuarioEncontrado = _context.Usuarios.Find(id);
+            var usuarioEncontrado = _context.Usuarios.Find(id);
 
-            if (usuarioEncontrado == null) return null;
+            if (usuarioEncontrado == null) throw new ArgumentNullException("Usuario nao encontrado");
 
             _context.Usuarios.Remove(usuarioEncontrado);
 
             _context.SaveChanges();
-
-            return usuarioEncontrado;
         }
 
         public async Task<List<ListarusuarioViewModel>> ListarusuarioAsync()
