@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Controllers
 {
@@ -29,6 +30,43 @@ namespace SenaiNotes.Controllers
         {
             _tipoUsuario.Cadastrar(tipoUsuario);
             return Created();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Deletar(int id)
+        {
+            try
+            {
+                _tipoUsuario.Deletar(id);
+                return NoContent();
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Atualizar(int id, CadastrarTipoUsuarioDto tipoUsuarioAtualizado)
+        {
+            try
+            {
+                _tipoUsuario.Atualizar(id, tipoUsuarioAtualizado);
+                return Ok(tipoUsuarioAtualizado);
+            }
+            catch
+            {
+                return NotFound("Tipo Usuario nao Encontrado");
+            }
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult ListarPorId(int id)
+        {
+            ListarTipoUsuarioViewModel tipoUsuario = _tipoUsuario.BuscarPorId(id);
+            if (tipoUsuario == null) return NotFound("Tipo Usuario nao encontrado!!");
+
+            return Ok(tipoUsuario);
         }
     }
 }

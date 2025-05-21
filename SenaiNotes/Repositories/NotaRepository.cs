@@ -1,4 +1,6 @@
-﻿using SenaiNotes.Context;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
@@ -23,6 +25,8 @@ namespace SenaiNotes.Repositories
             }
             notaEncontrado.Titulo = nota.Titulo;
             notaEncontrado.ConteudoNotas = nota.ConteudoNotas;
+            notaEncontrado.Arquivado = nota.Arquivado;  
+
             _context.SaveChanges();
         }
         public Nota BuscarPorId(int id)
@@ -39,6 +43,7 @@ namespace SenaiNotes.Repositories
                 Titulo = notaDto.Titulo,
                 ConteudoNotas = notaDto.ConteudoNotas,
                 UsuarioId = notaDto.UsuarioId,
+                Arquivado = false,
             };
             _context.Notas.Add(nota);
             _context.SaveChanges();
@@ -46,7 +51,7 @@ namespace SenaiNotes.Repositories
         }
         public void Deletar(int id)
         {
-            var notaEncontrado = _context.Notas.FirstOrDefault(n => n .NotasId == id); // Encontrar quem eu quero deletar
+            var notaEncontrado = _context.Notas.FirstOrDefault(n => n.NotasId == id); // Encontrar quem eu quero deletar
             if (notaEncontrado == null)
             {
                 throw new Exception("Nota nao encontrada");
@@ -57,19 +62,36 @@ namespace SenaiNotes.Repositories
 
         public List<ListarNotaViewModel> ListarTodos()
         {
-            return _context.Notas.Select(n => new ListarNotaViewModel
-            {
-                Titulo = n.Titulo,
-                ConteudoNotas = n.ConteudoNotas,
-            })
-            .ToList();
-        }
-        //TEM Q FAZER O LISTAR TAGS NO LISTAR TODOS
+            var notas = _context.Notas
+                .Include(n => n.TagNota)
+                .ThenInclude(ta => ta.TagNotasId)
+                .Select(n => new ListarNotaViewModel
+                {
+                    NotasId = n.NotasId,
+                    Titulo = n.Titulo,
+                    ConteudoNotas = n.ConteudoNotas,
+                    Lixeira = n.Lixeira,
+                    Arquivado = n.Arquivado,
+                    Imagem = n.Imagem,
+                    UsuarioId = n.UsuarioId,
+                    Tags = n.TagNota.Select(ta => new TagViewModel
+                    {
+                        TagsId = ta.Tags.TagsId,
+                        NomeTag = ta.Tags.NomeTag
+                    }).ToList()
+                })
+                .ToList();  
 
-        public void Lixeira(bool nota)
+                return notas;
+        }
+        public void Arquivar(int id)
         {
-           
+            var notaArquivada = _context.Notas.Find(id);
+            if (notaArquivada != null)
+            {
+               notaArquivada.Arquivado = !notaArquivada.Arquivado;
+                _context.SaveChanges();
+            }
         }
     }
 }
-

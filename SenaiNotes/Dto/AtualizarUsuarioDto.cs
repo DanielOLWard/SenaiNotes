@@ -10,8 +10,6 @@
 
         public string Telefone { get; set; } = null!;
 
-        public DateTime DataAtualizacao { get; set; }
-
         public int? TipoUsuarioId { get; set; }
     }
 }

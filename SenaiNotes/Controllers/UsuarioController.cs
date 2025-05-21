@@ -43,7 +43,7 @@ namespace SenaiNotes.Controllers
                 _usuarioRepository.Deletar(id);
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (ArgumentNullException ex)
             {
                 return NotFound("Usuario nao encontrado!");
             }

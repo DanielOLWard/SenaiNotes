@@ -28,9 +28,9 @@ namespace SenaiNotes.Repositories
             usuarioEncontrado.Nome = usuarioAtualizado.Nome;
             usuarioEncontrado.Email = usuarioAtualizado.Email;
             usuarioEncontrado.Senha = usuarioAtualizado.Senha;
-            usuarioEncontrado.DataAtualizacao = usuarioAtualizado.DataAtualizacao;
             usuarioEncontrado.Telefone = usuarioAtualizado.Telefone;
             usuarioEncontrado.TipoUsuarioId = usuarioAtualizado.TipoUsuarioId;
+            usuarioEncontrado.DataAtualizacao = DateTime.Now;
 
             usuarioEncontrado.Senha = passwordSercvice.HashPassword(usuarioEncontrado);
 
@@ -62,8 +62,9 @@ namespace SenaiNotes.Repositories
                 Email = usuarioDto.Email,
                 Senha = usuarioDto.Senha,
                 Telefone = usuarioDto.Telefone,
-                DataCadastro = usuarioDto.DataCadastro,
-                TipoUsuarioId = usuarioDto.TipoUsuarioId
+                TipoUsuarioId = usuarioDto.TipoUsuarioId,
+                DataCadastro = DateTime.Now,
+                DataAtualizacao = DateTime.Now
             };
 
             usuarioCadastrado.Senha = passwordService.HashPassword(usuarioCadastrado);
@@ -73,17 +74,15 @@ namespace SenaiNotes.Repositories
             _context.SaveChanges();
         }
 
-        public Usuario Deletar(int id)
+        public void Deletar(int id)
         {
-            Usuario usuarioEncontrado = _context.Usuarios.Find(id);
+            var usuarioEncontrado = _context.Usuarios.Find(id);
 
-            if (usuarioEncontrado == null) return null;
+            if (usuarioEncontrado == null) throw new ArgumentNullException("Usuario nao encontrado");
 
             _context.Usuarios.Remove(usuarioEncontrado);
 
             _context.SaveChanges();
-
-            return usuarioEncontrado;
         }
 
         public async Task<List<ListarusuarioViewModel>> ListarusuarioAsync()
