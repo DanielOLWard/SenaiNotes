@@ -1,4 +1,6 @@
-﻿namespace SenaiNotes.ViewModel
+﻿using SenaiNotes.Models;
+
+namespace SenaiNotes.ViewModel
 {
     public class ListarNotaViewModel
     {
@@ -6,7 +8,7 @@
 
         public string Titulo { get; set; } = null!;
 
-        public string ConteudoNotas { get; set; } = null!;
+        public string? ConteudoNotas { get; set; }
 
         public int? UsuarioId { get; set; }
 
@@ -15,5 +17,7 @@
         public string? Imagem { get; set; }
 
         public bool? Arquivado { get; set; }
+
+        public List<TagViewModel> Tags { get; set; }
     }
 }
