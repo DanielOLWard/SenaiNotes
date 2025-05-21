@@ -44,7 +44,7 @@ builder.Services.AddCors(
             policy =>
             {
                 // TODO
-                policy.WithOrigins("http://localhost:5092");
+                policy.WithOrigins("http://localhost:7114");
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
             });

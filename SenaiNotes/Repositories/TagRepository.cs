@@ -25,7 +25,7 @@ namespace SenaiNotes.Repositories
 
         public void Atualizar(int id, TagNota tagNota)
         {
-            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.Id == id);
+            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.TagsId == id);
             if (TagEncontrado == null)
             { 
 
@@ -37,12 +37,12 @@ namespace SenaiNotes.Repositories
 
         public Tag BuscarPorID(string nometag)
         {
-            return _context.Tags.FirstOrDefault(t => t.NomeTag == nometag);
+            return _context.Tags.FirstOrDefault(t => t.TagsId == id);
         }
 
         public void Deletar(int id)
         {
-            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.Id == id);
+            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.TagsId == id);
 
             if (TagEncontrado != null)
             {
@@ -61,7 +61,7 @@ namespace SenaiNotes.Repositories
 
         public void Atualizar(int id, Tag tag)
         {
-            var Tag = _context.Tags.FirstOrDefault(t => t.Id == id);
+            var Tag = _context.Tags.FirstOrDefault(t => t.TagsId == id);
             if (Tag == null)
             {
                 throw new ArgumentNullException("Tag nao encontrado");
@@ -71,7 +71,7 @@ namespace SenaiNotes.Repositories
 
         public Tag BuscarPorUsuario(int Tag)
         {
-            return _context.Tags.FirstOrDefault(t => t.Id == Tag);
+            return _context.Tags.FirstOrDefault(t => t.TagsId == Tag);
 
         }
     }

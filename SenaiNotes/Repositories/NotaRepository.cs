@@ -74,7 +74,7 @@ namespace SenaiNotes.Repositories
                     Arquivado = n.Arquivado,
                     Imagem = n.Imagem,
                     UsuarioId = n.UsuarioId,
-                    Tags = n.TagNota.Select(ta => new TagViewModel
+                    TagsId = n.TagNota.Select(ta => new TagViewModel
                     {
                         TagsId = ta.Tags.Id,
                         NomeTag = ta.Tags.NomeTag
