@@ -1,4 +1,5 @@
 ﻿using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace SenaiNotes.Repositories
             _context = context;
         }
 
-        public void Atualizar(int id, TagNota tagNota)
+        public void Atualizar(int id, TagNotaDto tagNota)
         {
-            var TagNotas = _context.Tags.FirstOrDefault(t => t.TagsId == id);
+            var TagNotas = _context.Tags.FirstOrDefault(t => t.Id == id);
             if (TagNotas == null)
             {
                 throw new ArgumentNullException("Tag nao encontrado");
@@ -27,18 +28,24 @@ namespace SenaiNotes.Repositories
 
         public Tag BuscarPorId(int Id)
         {
-            return _context.Tags.FirstOrDefault(t => t.TagsId == Id);
+            return _context.Tags.FirstOrDefault(t => t.Id == Id);
         }
 
-        public void Cadastrar(Tag tagN)
+     
+        public void Cadastrar(TagNotaDto tagN)
         {
-            _context.Tags.Add(tagN);
+            _context.TagNotaDto(tagN);
             _context.SaveChanges();
+        }
+
+        public void Cadastrar(TagDto tagN)
+        {
+            throw new NotImplementedException();
         }
 
         public void Deletar(int id)
         {
-            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.TagsId == id);
+            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.Id == id);
 
             if (TagEncontrado != null)
             {

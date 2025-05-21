@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SenaiNotes.Dto;
 using SenaiNotes.Models;
 
 namespace SenaiNotes.Context;
 
 public partial class SenaiNotesContext : DbContext
 {
-    public SenaiNotesContext()
-    {
-    }
-
+  
     private IConfiguration _configuration;
     public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options, IConfiguration config)
         : base(options)
@@ -54,7 +52,7 @@ public partial class SenaiNotesContext : DbContext
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.TagsId).HasName("PK__Tags__D4316BFC02F94603");
+            entity.HasKey(e => e.Id).HasName("PK__Tags__D4316BFC02F94603");
 
             entity.Property(e => e.NomeTag)
                 .HasMaxLength(100)
@@ -70,7 +68,7 @@ public partial class SenaiNotesContext : DbContext
                 .HasConstraintName("FK__TagNotas__NotasI__7E37BEF6");
 
             entity.HasOne(d => d.Tags).WithMany(p => p.TagNota)
-                .HasForeignKey(d => d.TagsId)
+                .HasForeignKey(d => d.NotasId)
                 .HasConstraintName("FK__TagNotas__TagsId__7F2BE32F");
         });
 
@@ -113,4 +111,9 @@ public partial class SenaiNotesContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    internal void TagNotaDto(TagNotaDto tagN)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using System;
@@ -20,9 +21,9 @@ namespace SenaiNotes.Controllers
             }
 
             [HttpPost]
-            public IActionResult CadastrarTag(Tag CadastroTag)
+            public IActionResult CadastrarTag(TagDto tagDto)
             {
-                _tagRepository.Cadastrar(CadastroTag);
+                _tagRepository.Cadastrar(tagDto);
                 return Created();
             }
 

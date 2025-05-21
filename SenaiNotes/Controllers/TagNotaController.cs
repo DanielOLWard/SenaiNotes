@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using SenaiNotes.Repositories;
@@ -22,11 +23,9 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(Tag CadastrarTagNotas)
+        public IActionResult Cadastrar(TagNotaDto CadastrarTagNotas)
         {
-            _tagNotasRepository.Cadastrar(CadastrarTagNotas);
-            return Created();
-            
+            throw new NotImplementedException();
         }
 
         [HttpGet]
@@ -41,11 +40,11 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut]
-        public IActionResult Atualizar(int id, TagNota tag)
+        public IActionResult Atualizar(int id, TagNotaDto tag)
         {
             try 
             { 
-                _tagNotasRepository.Atualizar(id, tag);
+                _tagNotasRepository.Atualizar(id, tag );
                 return Ok(id);
             }
             catch (Exception ex)
@@ -76,7 +75,7 @@ namespace SenaiNotes.Controllers
         public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
         {
             var tagnotas = await _context.TagNotas
-                .Where(t => t.TagsId == Id)
+                .Where(t => t.NotasId == Id)
                 .ToListAsync();
 
             return Ok(tagnotas);

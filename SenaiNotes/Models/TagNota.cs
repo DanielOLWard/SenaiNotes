@@ -9,8 +9,6 @@ public partial class TagNota
 
     public int? NotasId { get; set; }
 
-    public int? TagsId { get; set; }
-
     public virtual Nota? Notas { get; set; }
 
     public virtual Tag? Tags { get; set; }

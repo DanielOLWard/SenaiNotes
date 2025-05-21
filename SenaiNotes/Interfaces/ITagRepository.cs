@@ -1,4 +1,5 @@
-﻿using SenaiNotes.Models;
+﻿using SenaiNotes.Dto;
+using SenaiNotes.Models;
 
 namespace SenaiNotes.Interfaces
 {
@@ -7,8 +8,8 @@ namespace SenaiNotes.Interfaces
         Tag BuscarPorID(int id);
         void Atualizar(int id, Tag tagNota);
         void Deletar(int id);
-        void Cadastrar(Tag Tag);
-        Tag BuscarPorUsuario(Tag tagUser);
+        void Cadastrar(TagDto Tag);
+        Tag BuscarPorUsuario(int tag);
 
     }
 }
