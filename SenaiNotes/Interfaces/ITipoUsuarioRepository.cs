@@ -1,17 +1,18 @@
-﻿using SenaiNotes.Models;
+﻿using SenaiNotes.Dto;
+using SenaiNotes.Models;
 using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Interfaces
 {
     public interface ITipoUsuarioRepository
     {
-        Task<List<TipoUsuario>> ListarTipoUsuariosuarioAsync();
+        Task<List<ListarTipoUsuarioViewModel>> ListarTipoUsuariosuarioAsync();
 
-        TipoUsuario BuscarPorId(int id);
+        ListarTipoUsuarioViewModel BuscarPorId(int id);
 
-        void Cadastrar(TipoUsuario tipoUsuario);
+        void Cadastrar(CadastrarTipoUsuarioDto tipoUsuario);
 
-        void Atualizar(TipoUsuario tipoUsuario, int id);
+        void Atualizar(CadastrarTipoUsuarioDto tipoUsuario, int id);
 
         void Deletar (int  id);
     }

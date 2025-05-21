@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Repositories
 {
@@ -11,35 +14,62 @@ namespace SenaiNotes.Repositories
 
         public TipoUsuarioRepository(SenaiNotesContext context)
         {
-            context = _context;
+            _context = context;
         }
-        public void Atualizar(TipoUsuario tipoUsuario, int id)
+        public void Atualizar(CadastrarTipoUsuarioDto tipoUsuarioAtualizado, int id)
         {
-            throw new NotImplementedException();
+            var tipoUsuarioEncontrado = _context.TipoUsuarios.Find(id);
+
+            if (tipoUsuarioEncontrado == null) throw new ArgumentNullException("Tipo Usuario nao encontrado");
+
+            tipoUsuarioEncontrado.Descricao = tipoUsuarioAtualizado.Descricao;
+
+            _context.SaveChanges();
         }
 
-        public TipoUsuario BuscarPorId(int id)
+        public ListarTipoUsuarioViewModel BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            return _context.TipoUsuarios
+                .Select(t=> new ListarTipoUsuarioViewModel
+                {
+                    TipoUsuarioId = t.TipoUsuarioId,
+                    Descricao = t.Descricao
+                })
+                .FirstOrDefault(t=> t.TipoUsuarioId == id);
         }
 
-        public void Cadastrar(TipoUsuario tipoUsuario)
+        public void Cadastrar(CadastrarTipoUsuarioDto tipoUsuarioDto)
         {
-            _context.TipoUsuarios.Add(tipoUsuario);
+            var tipoUsuarioCadastrado = new TipoUsuario
+            {
+                Descricao = tipoUsuarioDto.Descricao
+            };
+
+            _context.TipoUsuarios.Add(tipoUsuarioCadastrado);
+            
             _context.SaveChanges();
         }
 
         public void Deletar(int id)
         {
             var tipoUsuarioEncontrado = _context.TipoUsuarios.Find(id);
+
             if (tipoUsuarioEncontrado == null) throw new ArgumentNullException("Tipo Usuario nao encontrado");
+
             _context.Remove(tipoUsuarioEncontrado);
+
             _context.SaveChanges();
         }
 
-        public Task<List<TipoUsuario>> ListarTipoUsuariosuarioAsync()
+        public async Task<List<ListarTipoUsuarioViewModel>> ListarTipoUsuariosuarioAsync()
         {
-            throw new NotImplementedException();
+            return await _context.TipoUsuarios
+                .Select(t => new ListarTipoUsuarioViewModel
+                {
+                    TipoUsuarioId = t.TipoUsuarioId,
+                    Descricao = t.Descricao
+                })
+                .ToListAsync();
         }
     }
 }
