@@ -9,6 +9,6 @@ namespace SenaiNotes.Interfaces
         void Cadastrar (TagDto tagN);
         void Deletar (int id );
         void Atualizar(int id, TagNotaDto tagNota);
-
+        void CadastrarTag(TagNotaDto cadastrarTagNotas);
     }
 }

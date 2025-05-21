@@ -1,4 +1,5 @@
-﻿using SenaiNotes.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
@@ -16,9 +17,9 @@ namespace SenaiNotes.Repositories
             _context = context;
         }
 
-        public void Cadastrar(TagDto tagDto)
+        public void Cadastrar(TagDto tag)
         {
-            _context.Add(tagDto);
+            _context.AddAsync(tag);
             _context.SaveChanges();
         }
 
@@ -26,16 +27,17 @@ namespace SenaiNotes.Repositories
         {
             var TagEncontrado = _context.Tags.FirstOrDefault(t => t.Id == id);
             if (TagEncontrado == null)
-            {
+            { 
+
                 throw new ArgumentNullException("Tag nao encontrado");
             }
             _context.SaveChanges();
 
         }
 
-        public Tag BuscarPorID(int id)
+        public Tag BuscarPorID(string nometag)
         {
-            return _context.Tags.FirstOrDefault(t => t.Id == id);
+            return _context.Tags.FirstOrDefault(t => t.NomeTag == nometag);
         }
 
         public void Deletar(int id)

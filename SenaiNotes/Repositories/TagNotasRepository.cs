@@ -1,4 +1,5 @@
-﻿using SenaiNotes.Context;
+﻿using Azure;
+using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
@@ -40,7 +41,14 @@ namespace SenaiNotes.Repositories
 
         public void Cadastrar(TagDto tagN)
         {
-            throw new NotImplementedException();
+            _context.AddAsync(tagN);
+            _context.SaveChanges();
+        }
+
+        public void CadastrarTag(TagNotaDto cadastrarTagNotas)
+        {
+            _context.AddAsync(cadastrarTagNotas);
+            _context.SaveChanges();
         }
 
         public void Deletar(int id)

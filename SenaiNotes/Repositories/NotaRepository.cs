@@ -76,7 +76,7 @@ namespace SenaiNotes.Repositories
                     UsuarioId = n.UsuarioId,
                     Tags = n.TagNota.Select(ta => new TagViewModel
                     {
-                        TagsId = ta.Tags.TagsId,
+                        TagsId = ta.Tags.Id,
                         NomeTag = ta.Tags.NomeTag
                     }).ToList()
                 })

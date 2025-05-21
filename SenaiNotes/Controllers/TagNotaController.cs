@@ -1,4 +1,5 @@
 ﻿
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
@@ -23,9 +24,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(TagNotaDto CadastrarTagNotas)
+        public IActionResult CadastrarTag( TagNotaDto CadastrarTagNotas)
         {
-            throw new NotImplementedException();
+            _tagNotasRepository.CadastrarTag(CadastrarTagNotas);
+            return Created();
         }
 
         [HttpGet]
