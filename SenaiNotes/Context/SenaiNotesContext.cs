@@ -75,7 +75,7 @@ public partial class SenaiNotesContext : DbContext
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Tags__D4316BFC02F94603");
+            entity.HasKey(e => e.TagsId).HasName("PK__Tags__D4316BFC02F94603");
 
             entity.ToTable(tb => tb.HasTrigger("trg_audit_Tags"));
 

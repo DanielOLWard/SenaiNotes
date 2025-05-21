@@ -74,7 +74,7 @@ namespace SenaiNotes.Controllers
         public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
         {
             var tags = await _context.Tags
-                .Where(t => t.Id == Id)
+                .Where(t => t.TagsId == Id)
                 .ToListAsync();
 
             return Ok(tags);
