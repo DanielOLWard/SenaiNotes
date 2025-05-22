@@ -12,6 +12,7 @@ namespace SenaiNotes.Repositories
     {
         private readonly SenaiNotesContext _context;
 
+
         public TagRepository(SenaiNotesContext context)
         {
             _context = context;
@@ -74,6 +75,7 @@ namespace SenaiNotes.Repositories
             return _context.Tags.FirstOrDefault(t => t.TagsId == Tag);
 
         }
+
     }
 }
 

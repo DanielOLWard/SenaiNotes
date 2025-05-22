@@ -4,23 +4,28 @@ using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 
 namespace SenaiNotes.Controllers
 {
-        [Route("api/[controller]")]
-        [ApiController]
-        public class TagController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TagController : ControllerBase
+    {
+        private ITagRepository _tagRepository;
+        private SenaiNotesContext _context;
+
+        public TagController(ITagRepository tagRepository)
         {
-            private ITagRepository _tagRepository;
-            private SenaiNotesContext _context;
+            _tagRepository = tagRepository;
+        }
 
-        public TagController( ITagRepository tagRepository)
-            {
-                _tagRepository = tagRepository;
-            }
-
-            [HttpPost]
+        [HttpPost]
+        [SwaggerOperation(
+            Summary = "Cadastra uma tag",
+            Description = "Este endpoint arquiva uma tag"
+            )]
             public IActionResult CadastrarTag(TagDto tagDto)
             {
                 _tagRepository.Cadastrar(tagDto);
