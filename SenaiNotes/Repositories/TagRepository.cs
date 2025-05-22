@@ -33,7 +33,9 @@ namespace SenaiNotes.Repositories
 
             public Tag BuscarPorID(int id)
             {
-                return _context.Tags.FirstOrDefault(t => t.TagsId == id);
+            var tags = _context.Tags.FirstOrDefault(t => t.UsuarioId == id && t.NomeTag == nome);
+
+            return tags;
             }
 
             public void Deletar(int id)

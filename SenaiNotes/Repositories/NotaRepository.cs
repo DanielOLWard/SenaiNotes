@@ -10,6 +10,13 @@ namespace SenaiNotes.Repositories
 {
     public class NotaRepository : INotaRepository
     {
+        private readonly ITagRepository _tagRepository;
+
+        public NotaRepository(SenaiNotesContext context, ITagRepository tagRepository)
+        {
+            _tagRepository = tagRepository;
+        }
+
         private readonly SenaiNotesContext _context;
         public NotaRepository(SenaiNotesContext context)
         {
@@ -34,20 +41,28 @@ namespace SenaiNotes.Repositories
             //Qualquer metodo que vai me trazer apenas 1 cliente 
             //First or Default
             return _context.Notas.FirstOrDefault(n => n.NotasId == id);
+         
         }
-
-        public void Cadastrar(CadastrarNotaDto notaDto)
+        public CadastrarNotaDto? Cadastrar(CadastrarNotaDto notaDto)
         {
-            var nota = new Nota
-            {
-                Titulo = notaDto.Titulo,
-                ConteudoNotas = notaDto.ConteudoNotas,
-                UsuarioId = notaDto.UsuarioId,
-                Arquivado = false,
-            };
-            _context.Notas.Add(nota);
-            _context.SaveChanges();
+           // 1 - Percorrer a Lista de Tags
+           // 1.1 - Essa Tag ja existe?
+           // 1.2 - Pegar o Id dela 
+           // 1.2 - Cadastrar a Tag, e pegar o Id
 
+            List<int> idTags = new List<int>();
+
+            foreach (var item in notaDto.Tags)
+            {
+
+                var tag = _tagRepository.BuscarPorID(notaDto.UsuarioId, item);
+
+                if (tag == null)
+                {
+                    //TODO: Cadastrar a Tag
+                }
+                idTags.Add(tag.TagsId);
+            }
         }
         public void Deletar(int id)
         {
