@@ -1,7 +1,9 @@
 ﻿
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using SenaiNotes.Repositories;
@@ -13,6 +15,7 @@ namespace SenaiNotes.Controllers
     public class TagNotaController : ControllerBase
     {
         private ITagNotasRepository _tagNotasRepository;
+        private SenaiNotesContext _context;
 
         public TagNotaController( ITagNotasRepository tagNotaRepository)
         {
@@ -21,11 +24,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(Tag CadastrarTagNotas)
+        public IActionResult CadastrarTag( TagNotaDto CadastrarTagNotas)
         {
-            _tagNotasRepository.Cadastrar(CadastrarTagNotas);
+            _tagNotasRepository.CadastrarTag(CadastrarTagNotas);
             return Created();
-            
         }
 
         [HttpGet]
@@ -40,11 +42,11 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut]
-        public IActionResult Atualizar(int id, TagNota tag)
+        public IActionResult Atualizar(int id, TagNotaDto tag)
         {
             try 
             { 
-                _tagNotasRepository.Atualizar(id, tag);
+                _tagNotasRepository.Atualizar(id, tag );
                 return Ok(id);
             }
             catch (Exception ex)
@@ -71,7 +73,15 @@ namespace SenaiNotes.Controllers
             }
         }
 
+        [HttpGet("usuario/{Id}")]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
+        {
+            var tagnotas = await _context.TagNotas
+                .Where(t => t.NotasId == Id)
+                .ToListAsync();
 
+            return Ok(tagnotas);
+        }
 
     }
 }

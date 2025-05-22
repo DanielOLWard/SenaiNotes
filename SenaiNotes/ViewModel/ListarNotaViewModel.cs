@@ -18,6 +18,6 @@ namespace SenaiNotes.ViewModel
 
         public bool? Arquivado { get; set; }
 
-        public List<TagViewModel> Tags { get; set; }
+        public List<TagViewModel> TagsId { get; set; }
     }
 }

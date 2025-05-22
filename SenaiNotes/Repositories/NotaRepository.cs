@@ -40,6 +40,16 @@ namespace SenaiNotes.Repositories
         {
             //Qualquer metodo que vai me trazer apenas 1 cliente 
             //First or Default
+
+            //// Sem Id na Tag
+            //var tags = _context.Tags.Include(t => t.TagNota).ThenInclude(ta => ta.Notas).ThenInclude(n => n.Usuario).FirstOrDefault(t => t.TagsId == id);
+
+            //var idUsuario = tags.TagNota.First().Notas.Usuario.UsuarioId;
+
+
+            //// Com Id na Tag
+            //var id = _context.Tags.FirstOrDefault(t => t.TagsId == id).UsuarioId;
+
             return _context.Notas.FirstOrDefault(n => n.NotasId == id);
          
         }
@@ -89,7 +99,7 @@ namespace SenaiNotes.Repositories
                     Arquivado = n.Arquivado,
                     Imagem = n.Imagem,
                     UsuarioId = n.UsuarioId,
-                    Tags = n.TagNota.Select(ta => new TagViewModel
+                    TagsId = n.TagNota.Select(ta => new TagViewModel
                     {
                         TagsId = ta.Tags.TagsId,
                         NomeTag = ta.Tags.NomeTag
@@ -106,6 +116,7 @@ namespace SenaiNotes.Repositories
             {
                notaArquivada.Arquivado = !notaArquivada.Arquivado;
                 _context.SaveChanges();
+
             }
         }
     }

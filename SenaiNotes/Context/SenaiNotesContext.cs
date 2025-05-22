@@ -35,6 +35,7 @@ public partial class SenaiNotesContext : DbContext
         var conexao = _configuration.GetConnectionString("DefaultConecction");
         optionsBuilder.UseSqlServer(conexao);
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AuditoriaGeral>(entity =>
@@ -84,6 +85,10 @@ public partial class SenaiNotesContext : DbContext
             entity.Property(e => e.NomeTag)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Usuario).WithMany(p => p.Tags)
+                .HasForeignKey(d => d.UsuarioId)
+                .HasConstraintName("FK__Tags__UsuarioId__3A4CA8FD");
         });
 
         modelBuilder.Entity<TagNota>(entity =>

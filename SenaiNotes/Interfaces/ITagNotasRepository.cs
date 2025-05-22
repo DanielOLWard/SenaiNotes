@@ -1,13 +1,14 @@
-﻿using SenaiNotes.Models;
+﻿using SenaiNotes.Dto;
+using SenaiNotes.Models;
 
 namespace SenaiNotes.Interfaces
 {
     public interface ITagNotasRepository
     {
-        Tag BuscarPorId(int tagNota);
-        void Cadastrar (Tag tagN);
+        Tag BuscarPorId(int tag);
+        void Cadastrar (TagNotaDto tagN);
         void Deletar (int id );
-        void Atualizar(int id, TagNota tagNota);
-
+        void Atualizar(int id, TagNotaDto tagNota);
+        void CadastrarTag(TagNotaDto cadastrarTagNotas);
     }
 }

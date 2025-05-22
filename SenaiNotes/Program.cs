@@ -14,7 +14,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddSwaggerGen(options =>
 {
-options.EnableAnnotations();
+    options.EnableAnnotations();
 });
 
 builder.Services.AddDbContext<SenaiNotesContext>();

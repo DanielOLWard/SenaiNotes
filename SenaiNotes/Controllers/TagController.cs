@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using System;
 
 namespace SenaiNotes.Controllers
 {
@@ -10,16 +13,17 @@ namespace SenaiNotes.Controllers
         public class TagController : ControllerBase
         {
             private ITagRepository _tagRepository;
+            private SenaiNotesContext _context;
 
-            public TagController( ITagRepository tagRepository)
+        public TagController( ITagRepository tagRepository)
             {
                 _tagRepository = tagRepository;
             }
 
             [HttpPost]
-            public IActionResult CadastrarTag(Tag CadastroTag)
+            public IActionResult CadastrarTag(TagDto tagDto)
             {
-                _tagRepository.Cadastrar(CadastroTag);
+                _tagRepository.Cadastrar(tagDto);
                 return Created();
             }
 
@@ -66,7 +70,14 @@ namespace SenaiNotes.Controllers
                     return NotFound("Tag não encontrado!");
                 }
             }
+        [HttpGet("usuario/{Id}")]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
+        {
+            var tags = await _context.Tags
+                .Where(t => t.TagsId == Id)
+                .ToListAsync();
 
-
+            return Ok(tags);
         }
+    }
    }

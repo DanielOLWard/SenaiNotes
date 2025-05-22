@@ -1,4 +1,6 @@
-﻿using SenaiNotes.Context;
+﻿using Azure;
+using SenaiNotes.Context;
+using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace SenaiNotes.Repositories
             _context = context;
         }
 
-        public void Atualizar(int id, TagNota tagNota)
+        public void Atualizar(int id, TagNotaDto tagNota)
         {
             var TagNotas = _context.Tags.FirstOrDefault(t => t.TagsId == id);
             if (TagNotas == null)
@@ -30,9 +32,21 @@ namespace SenaiNotes.Repositories
             return _context.Tags.FirstOrDefault(t => t.TagsId == Id);
         }
 
-        public void Cadastrar(Tag tagN)
+     
+        public void Cadastrar(TagNotaDto tagN)
         {
-            _context.Tags.Add(tagN);
+            var notaTag
+        }
+
+        public void Cadastrar(TagDto tagN)
+        {
+            _context.AddAsync(tagN);
+            _context.SaveChanges();
+        }
+
+        public void CadastrarTag(TagNotaDto cadastrarTagNotas)
+        {
+            _context.AddAsync(cadastrarTagNotas);
             _context.SaveChanges();
         }
 

@@ -9,5 +9,9 @@ public partial class Tag
 
     public string NomeTag { get; set; } = null!;
 
+    public int? UsuarioId { get; set; }
+
     public virtual ICollection<TagNota> TagNota { get; set; } = new List<TagNota>();
+
+    public virtual Usuario? Usuario { get; set; }
 }
