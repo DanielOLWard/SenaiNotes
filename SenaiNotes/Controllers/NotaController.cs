@@ -5,6 +5,7 @@ using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using SenaiNotes.Repositories;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SenaiNotes.Controllers
 {
@@ -36,6 +37,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPatch("/arquivar{id}")]
+        [SwaggerOperation(
+                Summary = "Arquiva uma Nota",
+            Description = "Este endpoint arquiva uma nota com base no ID fornecido"
+            )]
         public IActionResult Arquivar(int id)
         {
             _Notarepository.Arquivar(id);

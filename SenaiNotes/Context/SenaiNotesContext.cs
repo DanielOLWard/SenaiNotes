@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using SenaiNotes.Dto;
 using SenaiNotes.Models;
 
 namespace SenaiNotes.Context;
 
 public partial class SenaiNotesContext : DbContext
 {
-  
+    public SenaiNotesContext()
+    {
+    }
+
     private IConfiguration _configuration;
     public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options, IConfiguration config)
         : base(options)
@@ -33,6 +35,7 @@ public partial class SenaiNotesContext : DbContext
         var conexao = _configuration.GetConnectionString("DefaultConecction");
         optionsBuilder.UseSqlServer(conexao);
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AuditoriaGeral>(entity =>
@@ -82,6 +85,10 @@ public partial class SenaiNotesContext : DbContext
             entity.Property(e => e.NomeTag)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Usuario).WithMany(p => p.Tags)
+                .HasForeignKey(d => d.UsuarioId)
+                .HasConstraintName("FK__Tags__UsuarioId__3A4CA8FD");
         });
 
         modelBuilder.Entity<TagNota>(entity =>
@@ -95,7 +102,7 @@ public partial class SenaiNotesContext : DbContext
                 .HasConstraintName("FK__TagNotas__NotasI__7E37BEF6");
 
             entity.HasOne(d => d.Tags).WithMany(p => p.TagNota)
-                .HasForeignKey(d => d.NotasId)
+                .HasForeignKey(d => d.TagsId)
                 .HasConstraintName("FK__TagNotas__TagsId__7F2BE32F");
         });
 
@@ -140,9 +147,4 @@ public partial class SenaiNotesContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-    internal void TagNotaDto(TagNotaDto tagN)
-    {
-        throw new NotImplementedException();
-    }
 }
