@@ -9,7 +9,7 @@ namespace SenaiNotes.Interfaces
     {
             List<ListarNotaViewModel> ListarTodos();
             Nota BuscarPorId(int id);
-            CadastrarNotaDto Cadastrar(CadastrarNotaDto nota);
+        CadastrarNotaDto Cadastrar(CadastrarNotaDto nota);
             void Atualizar(int id, CadastrarNotaDto nota);
             void Deletar(int id);
             void Arquivar(int id);

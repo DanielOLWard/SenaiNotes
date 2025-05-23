@@ -11,15 +11,11 @@ namespace SenaiNotes.Repositories
     public class NotaRepository : INotaRepository
     {
         private readonly ITagRepository _tagRepository;
+        private readonly SenaiNotesContext _context;
 
         public NotaRepository(SenaiNotesContext context, ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
-        }
-
-        private readonly SenaiNotesContext _context;
-        public NotaRepository(SenaiNotesContext context)
-        {
             _context = context;
         }
         public void Atualizar(int id, CadastrarNotaDto nota)
@@ -32,7 +28,6 @@ namespace SenaiNotes.Repositories
             }
             notaEncontrado.Titulo = nota.Titulo;
             notaEncontrado.ConteudoNotas = nota.ConteudoNotas;
-            notaEncontrado.Arquivado = nota.Arquivado;  
 
             _context.SaveChanges();
         }
@@ -40,39 +35,60 @@ namespace SenaiNotes.Repositories
         {
             //Qualquer metodo que vai me trazer apenas 1 cliente 
             //First or Default
-
-            //// Sem Id na Tag
-            //var tags = _context.Tags.Include(t => t.TagNota).ThenInclude(ta => ta.Notas).ThenInclude(n => n.Usuario).FirstOrDefault(t => t.TagsId == id);
-
-            //var idUsuario = tags.TagNota.First().Notas.Usuario.UsuarioId;
-
-
-            //// Com Id na Tag
-            //var id = _context.Tags.FirstOrDefault(t => t.TagsId == id).UsuarioId;
-
             return _context.Notas.FirstOrDefault(n => n.NotasId == id);
-         
         }
-        public CadastrarNotaDto? Cadastrar(CadastrarNotaDto notaDto)
+        public CadastrarNotaDto Cadastrar(CadastrarNotaDto notaDto)
         {
-           // 1 - Percorrer a Lista de Tags
-           // 1.1 - Essa Tag ja existe?
-           // 1.2 - Pegar o Id dela 
-           // 1.2 - Cadastrar a Tag, e pegar o Id
+            // 1 - Percorrer a Lista de Tags
+            // 1.1 - Essa Tag ja existe?
+            // 1.2 - Pegar o Id dela 
+            // 1.2 - Cadastrar a Tag, e pegar o Id
 
             List<int> idTags = new List<int>();
 
-            foreach (var item in notaDto.Tags)
+            foreach (var item in notaDto.Tags) // Percorro a lista de Tags
             {
-
-                var tag = _tagRepository.BuscarPorID(notaDto.UsuarioId, item);
-
+                // Procuro se a Tag existe
+                var tag = _tagRepository.BuscarPorNomeId(notaDto.UsuarioId, item);
+                // Caso nao exista eu crio uma
                 if (tag == null)
                 {
-                    //TODO: Cadastrar a Tag
+                    tag = new Tag
+                    {
+                        NomeTag = item,
+                        UsuarioId = notaDto.UsuarioId,
+                    };
+                    _context.Add(tag);
+                    _context.SaveChanges();
                 }
                 idTags.Add(tag.TagsId);
             }
+
+            // Cadastrar Nota
+            var novaNota = new Nota
+            {
+                Titulo = notaDto.Titulo,
+                ConteudoNotas = notaDto.ConteudoNotas,
+                Lixeira = false,
+                Arquivado = false,
+                Imagem = notaDto.Imagem,
+                UsuarioId = notaDto.UsuarioId
+            };
+            _context.Add(novaNota);
+            _context.SaveChanges();
+
+            // Cadastrar a TagNota
+            foreach (var id in idTags)
+            {
+                var tagNota = new TagNota
+                {
+                    NotasId = novaNota.NotasId,
+                    TagsId = id
+                };
+                _context.Add(tagNota);
+                _context.SaveChanges();
+            }
+            return notaDto;
         }
         public void Deletar(int id)
         {
@@ -116,7 +132,6 @@ namespace SenaiNotes.Repositories
             {
                notaArquivada.Arquivado = !notaArquivada.Arquivado;
                 _context.SaveChanges();
-
             }
         }
     }

@@ -5,7 +5,7 @@ namespace SenaiNotes.Interfaces
 {
     public interface ITagRepository
     {
-        Tag BuscarPorID(int id);
+        Tag BuscarPorNomeId (int id, string nome);
         void Atualizar(int id, Tag tagNota);
         void Deletar(int id);
         void Cadastrar(TagDto Tag);

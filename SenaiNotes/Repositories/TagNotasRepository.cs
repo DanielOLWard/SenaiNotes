@@ -35,7 +35,7 @@ namespace SenaiNotes.Repositories
      
         public void Cadastrar(TagNotaDto tagN)
         {
-            var notaTag
+            var notaTag=0;
         }
 
         public void Cadastrar(TagDto tagN)

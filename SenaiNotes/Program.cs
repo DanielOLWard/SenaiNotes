@@ -12,10 +12,12 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
 
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(
+    options =>
 {
     options.EnableAnnotations();
-});
+}
+);
 
 builder.Services.AddDbContext<SenaiNotesContext>();
 builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
@@ -47,7 +49,7 @@ builder.Services.AddCors(
             policy =>
             {
                 // TODO
-                policy.WithOrigins("http://localhost:7114");
+                policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173");
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
             });
@@ -58,8 +60,10 @@ var app = builder.Build();
 
 app.UseCors("minhasOrigens");
 
+
 app.UseSwagger();
-app.UseSwaggerUI(options => // Faz o Swagger abrir direto
+//app.UseSwaggerUI();
+app.UseSwaggerUI(options => // Faz o Swagger abrir direto 
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
