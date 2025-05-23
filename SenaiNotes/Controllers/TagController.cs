@@ -8,68 +8,68 @@ using System;
 
 namespace SenaiNotes.Controllers
 {
-        [Route("api/[controller]")]
-        [ApiController]
-        public class TagController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TagController : ControllerBase
+    {
+        private ITagRepository _tagRepository;
+        private SenaiNotesContext _context;
+
+        public TagController(ITagRepository tagRepository)
         {
-            private ITagRepository _tagRepository;
-            private SenaiNotesContext _context;
+            _tagRepository = tagRepository;
+        }
 
-        public TagController( ITagRepository tagRepository)
+        [HttpPost]
+        public IActionResult CadastrarTag(TagDto tagDto)
+        {
+            _tagRepository.Cadastrar(tagDto);
+            return Created();
+        }
+
+        [HttpGet]
+        public IActionResult BuscarPorId(int id)
+        {
+            Tag tag = _tagRepository.BuscarPorID(id);
+            if (tag == null)
             {
-                _tagRepository = tagRepository;
+                return NotFound();
             }
+            return Ok(tag);
+        }
 
-            [HttpPost]
-            public IActionResult CadastrarTag(TagDto tagDto)
+        [HttpPut]
+        public IActionResult Atualizar(int id, Tag tag)
+        {
+            try
             {
-                _tagRepository.Cadastrar(tagDto);
-                return Created();
-            }
+                _tagRepository.Atualizar(id, tag);
 
-            [HttpGet]
-            public IActionResult BuscarPorId(int id)
-            {
-                Tag tag = _tagRepository.BuscarPorID(id);
-                if (tag == null)
-                {
-                    return NotFound();
-                }
                 return Ok(tag);
             }
-
-            [HttpPut]
-            public IActionResult Atualizar(int id, Tag tag)
+            catch (Exception ex)
             {
-                try
-                {
-                    _tagRepository.Atualizar(id, tag);
-
-                    return Ok(tag);
-                }
-                catch (Exception ex)
-                {
-                    return NotFound(ex);
-                }
-
+                return NotFound(ex);
             }
 
-            [HttpDelete]
-            public IActionResult Deletar(int id)
-            {
-                try
-                {
-                    _tagRepository.Deletar(id);
+        }
 
-                    // 204 - Deu certo!
-                    return NoContent();
-                }
-                // Caso de erro
-                catch (Exception ex)
-                {
-                    return NotFound("Tag não encontrado!");
-                }
+        [HttpDelete]
+        public IActionResult Deletar(int id)
+        {
+            try
+            {
+                _tagRepository.Deletar(id);
+
+                // 204 - Deu certo!
+                return NoContent();
             }
+            // Caso de erro
+            catch (Exception ex)
+            {
+                return NotFound("Tag não encontrado!");
+            }
+        }
         [HttpGet("usuario/{Id}")]
         public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
         {
@@ -80,4 +80,4 @@ namespace SenaiNotes.Controllers
             return Ok(tags);
         }
     }
-   }
+}

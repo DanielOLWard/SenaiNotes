@@ -16,8 +16,8 @@ namespace SenaiNotes.Repositories
         {
             _tagRepository = tagRepository;
         }
-
         private readonly SenaiNotesContext _context;
+
         public NotaRepository(SenaiNotesContext context)
         {
             _context = context;
@@ -65,7 +65,7 @@ namespace SenaiNotes.Repositories
             foreach (var item in notaDto.Tags)
             {
 
-                var tag = _tagRepository.BuscarPorID(notaDto.UsuarioId, item);
+                var tag = _tagRepository.BuscarPorNomeID(notaDto.UsuarioId, item);
 
                 if (tag == null)
                 {
