@@ -28,9 +28,9 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarPorId(int id)
+        public IActionResult BuscarPorNomeId(int id, string nome)
         {
-            Tag tag = _tagRepository.BuscarPorID(id);
+            Tag tag = _tagRepository.BuscarPorNomeId(id, nome);
             if (tag == null)
             {
                 return NotFound();

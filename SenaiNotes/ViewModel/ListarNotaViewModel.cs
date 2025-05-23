@@ -10,7 +10,7 @@ namespace SenaiNotes.ViewModel
 
         public string? ConteudoNotas { get; set; }
 
-        public int? UsuarioId { get; set; }
+        public int UsuarioId { get; set; }
 
         public bool? Lixeira { get; set; }
 
@@ -19,5 +19,7 @@ namespace SenaiNotes.ViewModel
         public bool? Arquivado { get; set; }
 
         public List<TagViewModel> TagsId { get; set; }
+
+        public virtual Usuario? Usuario { get; set; }
     }
 }

@@ -11,7 +11,7 @@ public partial class Nota
 
     public string? ConteudoNotas { get; set; }
 
-    public int? UsuarioId { get; set; }
+    public int UsuarioId { get; set; }
 
     public bool? Lixeira { get; set; }
 
@@ -21,5 +21,5 @@ public partial class Nota
 
     public virtual ICollection<TagNota> TagNota { get; set; } = new List<TagNota>();
 
-    public virtual Usuario? Usuario { get; set; }
+    public virtual Usuario Usuario { get; set; }
 }
