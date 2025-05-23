@@ -53,7 +53,6 @@ builder.Services.AddCors(
             });
     });
 
-builder.Services.AddAuthentication();
 
 var app = builder.Build();
 
