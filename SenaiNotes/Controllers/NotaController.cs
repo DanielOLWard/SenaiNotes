@@ -36,7 +36,7 @@ namespace SenaiNotes.Controllers
             return Ok(_Notarepository.ListarTodos());
         }
 
-        [HttpPatch("/arquivar{id}")]
+        [HttpPatch("/arquivar{id}/nota")]
         [SwaggerOperation(
             Summary = "Arquiva uma Nota",
             Description = "Este endpoint arquiva uma Nota com base no ID fornecido"
