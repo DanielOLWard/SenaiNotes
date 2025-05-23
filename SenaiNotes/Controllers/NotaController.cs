@@ -51,11 +51,9 @@ namespace SenaiNotes.Controllers
         public IActionResult CadastrarNotas(CadastrarNotaDto nota)
         {
             _Notarepository.Cadastrar(nota);
-
-
-
             return Created();
         }
+
         [HttpPut("{id}")]
         public IActionResult Editar(int id, CadastrarNotaDto nota)
         {
@@ -68,8 +66,8 @@ namespace SenaiNotes.Controllers
             {
                 return NotFound("Nota nao encontrada!");
             }
-
         }
+
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {

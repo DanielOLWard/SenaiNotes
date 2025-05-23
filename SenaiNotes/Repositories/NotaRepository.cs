@@ -105,7 +105,7 @@ namespace SenaiNotes.Repositories
         {
             var notas = _context.Notas
                 .Include(n => n.TagNota)
-                .ThenInclude(ta => ta.TagNotasId)
+                .ThenInclude(tn => tn.Tags)
                 .Select(n => new ListarNotaViewModel
                 {
                     NotasId = n.NotasId,
@@ -115,24 +115,27 @@ namespace SenaiNotes.Repositories
                     Arquivado = n.Arquivado,
                     Imagem = n.Imagem,
                     UsuarioId = n.UsuarioId,
-                    TagsId = n.TagNota.Select(ta => new TagViewModel
+                    TagsId = n.TagNota.Select(tn => new TagViewModel
                     {
-                        TagsId = ta.Tags.TagsId,
-                        NomeTag = ta.Tags.NomeTag
+                        TagsId = tn.Tags.TagsId,
+                        NomeTag = tn.Tags.NomeTag
                     }).ToList()
                 })
                 .ToList();  
 
                 return notas;
         }
-        public void Arquivar(int id)
+        public Nota Arquivar(int id)
         {
-            var notaArquivada = _context.Notas.Find(id);
-            if (notaArquivada != null)
-            {
-               notaArquivada.Arquivado = !notaArquivada.Arquivado;
-                _context.SaveChanges();
-            }
+            var nota = _context.Notas.Find(id);
+
+            if (nota == null) return null;
+
+            nota.Arquivado = !nota.Arquivado;
+
+            _context.SaveChanges();
+
+            return nota;
         }
     }
 }
