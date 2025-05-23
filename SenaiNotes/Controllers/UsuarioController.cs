@@ -4,6 +4,7 @@ using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Services;
 using SenaiNotes.ViewModel;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SenaiNotes.Controllers
 {
@@ -34,6 +35,12 @@ namespace SenaiNotes.Controllers
 
             return Created();
         }
+
+        [HttpPatch("/arquivar{id}/usuario")]
+        [SwaggerOperation(
+           Summary = "Arquiva um Usuario",
+           Description = "Este endpoint arquiva um Usuario com base no ID fornecido"
+           )]
 
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)

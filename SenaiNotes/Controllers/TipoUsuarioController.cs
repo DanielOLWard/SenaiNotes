@@ -4,6 +4,7 @@ using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using SenaiNotes.ViewModel;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SenaiNotes.Controllers
 {
@@ -45,6 +46,12 @@ namespace SenaiNotes.Controllers
                 return NotFound();
             }
         }
+        [HttpPatch("/arquivar{id}/tipo-usuario")]
+        [SwaggerOperation(
+           Summary = "Arquiva um TipoUsuario",
+           Description = "Este endpoint arquiva um TipoUsuario com base no ID fornecido"
+           )]
+
 
         [HttpPut("{id}")]
         public IActionResult Atualizar(int id, CadastrarTipoUsuarioDto tipoUsuarioAtualizado)

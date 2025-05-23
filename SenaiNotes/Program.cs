@@ -13,7 +13,7 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddSwaggerGen(
-    options =>
+options =>
 {
     options.EnableAnnotations();
 }
