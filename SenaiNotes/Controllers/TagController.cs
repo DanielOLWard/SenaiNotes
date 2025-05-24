@@ -4,6 +4,7 @@ using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 
 namespace SenaiNotes.Controllers
@@ -21,6 +22,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Cadastrar Tag",
+            Description = "Este EndPoint Cadastra Tag"
+            )]
         public IActionResult CadastrarTag(TagDto tagDto)
         {
             _tagRepository.Cadastrar(tagDto);
@@ -28,6 +33,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Buscar Nome Por Id Tag",
+            Description = "Este EndPoint Buscar Nome por Id Tag"
+            )]
         public IActionResult BuscarPorNomeId(int id, string nome)
         {
             Tag tag = _tagRepository.BuscarPorNomeId(id, nome);
@@ -39,6 +48,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut]
+        [SwaggerOperation(
+            Summary = "Atualizar Tag",
+            Description = "Este EndPoint Atualiza Tag"
+            )]
         public IActionResult Atualizar(int id, Tag tag)
         {
             try
@@ -55,6 +68,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpDelete]
+        [SwaggerOperation(
+            Summary = "Deletar Tag",
+            Description = "Este EndPoint Deleta Tag"
+            )]
         public IActionResult Deletar(int id)
         {
             try
@@ -71,6 +88,10 @@ namespace SenaiNotes.Controllers
             }
         }
         [HttpGet("usuario/{Id}")]
+        [SwaggerOperation(
+            Summary = "Buscar Tag por Id",
+            Description = "Este EndPoint busca Tag por Id"
+            )]
         public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
         {
             var tags = await _context.Tags

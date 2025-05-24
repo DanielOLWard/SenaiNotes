@@ -22,6 +22,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Listar UsuarioAsync",
+            Description = "Este EndPoint Lista os UsuarioAsync"
+            )]
         public async Task<IActionResult> ListarUsuariosAsync()
         {
             var usuario = await _usuarioRepository.ListarusuarioAsync();
@@ -29,6 +33,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Fornece um Usuario",
+            Description = "Este endpoint fornece um usuario"
+            )]
         public IActionResult CadastrarUsuario(CadastrarUsuarioDto cadastrarUsuario)
         {
             _usuarioRepository.Cadastrar(cadastrarUsuario);
@@ -36,13 +44,11 @@ namespace SenaiNotes.Controllers
             return Created();
         }
 
-        [HttpPatch("/arquivar{id}/usuario")]
-        [SwaggerOperation(
-           Summary = "Arquiva um Usuario",
-           Description = "Este endpoint arquiva um Usuario com base no ID fornecido"
-           )]
-
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Deletar Usuario",
+            Description = "Este EndPoint delete um Usuario"
+            )]
         public IActionResult Deletar(int id)
         {
             try
@@ -57,6 +63,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Atualizar Usuario",
+            Description = "Este EndPoint Atualiza um Usuario"
+            )]
         public IActionResult AtualizarUsuario(int id, AtualizarusuarioDto usuarioAtualizado)
         {
             try
@@ -71,6 +81,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Listar por Id Usuario",
+            Description = "Este EndPoint Lista por Id os Usuario"
+            )]
         public IActionResult ListarPorId (int id)
         {
             ListarusuarioViewModel usuario = _usuarioRepository.BuscarPorId(id);
@@ -81,6 +95,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost("login")]
+        [SwaggerOperation(
+            Summary = "Login Usuario",
+            Description = "Este EndPoint e responsavel pelo Login do Usuario"
+            )]
         public IActionResult Login (LoginDto login)
         {
             var usuario = _usuarioRepository.Login(login.Email, login.Senha);
