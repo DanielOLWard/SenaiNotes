@@ -31,14 +31,7 @@ namespace SenaiNotes.Repositories
         {
             return _context.Tags.FirstOrDefault(t => t.TagsId == Id);
         }
-
-     
         public void Cadastrar(TagNotaDto tagN)
-        {
-            var notaTag
-        }
-
-        public void Cadastrar(TagDto tagN)
         {
             _context.AddAsync(tagN);
             _context.SaveChanges();
