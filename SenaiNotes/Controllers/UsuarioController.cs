@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
@@ -22,6 +23,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Listar UsuarioAsync",
             Description = "Este EndPoint Lista os UsuarioAsync"
@@ -34,8 +36,8 @@ namespace SenaiNotes.Controllers
 
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Fornece um Usuario",
-            Description = "Este endpoint fornece um usuario"
+            Summary = "Cadastra um Usuario",
+            Description = "Este Cadastra fornece um usuario"
             )]
         public IActionResult CadastrarUsuario(CadastrarUsuarioDto cadastrarUsuario)
         {
@@ -45,6 +47,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Deletar Usuario",
             Description = "Este EndPoint delete um Usuario"
@@ -63,6 +66,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Atualizar Usuario",
             Description = "Este EndPoint Atualiza um Usuario"
@@ -81,6 +85,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Listar por Id Usuario",
             Description = "Este EndPoint Lista por Id os Usuario"

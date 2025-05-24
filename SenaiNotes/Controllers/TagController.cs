@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
 using SenaiNotes.Dto;
@@ -10,6 +11,7 @@ using System;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TagController : ControllerBase
     {
