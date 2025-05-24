@@ -23,5 +23,7 @@ public partial class Usuario
 
     public virtual ICollection<Nota> Nota { get; set; } = new List<Nota>();
 
+    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+
     public virtual TipoUsuario? TipoUsuario { get; set; }
 }

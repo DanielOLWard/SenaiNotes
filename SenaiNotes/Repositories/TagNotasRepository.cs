@@ -35,8 +35,7 @@ namespace SenaiNotes.Repositories
      
         public void Cadastrar(TagNotaDto tagN)
         {
-            _context.TagNotaDto(tagN);
-            _context.SaveChanges();
+            var notaTag
         }
 
         public void Cadastrar(TagDto tagN)
