@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using SenaiNotes.ViewModel;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TipoUsuarioController : ControllerBase
     {
@@ -19,6 +22,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Listar Tipo-Usuario",
+            Description = "Este EndPoint Lista os Tipo-Usuario"
+            )]
         public async Task<IActionResult> ListarTipoUsuarioAsync()
         {
             var tipoUsuario = await _tipoUsuario.ListarTipoUsuariosuarioAsync();
@@ -26,6 +33,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Cadastrar Tipo-Usuario",
+            Description = "Este EndPoint Cadastra um Tipo-Usuario"
+            )]
         public IActionResult CadastrarTipoUsuario(CadastrarTipoUsuarioDto tipoUsuario)
         {
             _tipoUsuario.Cadastrar(tipoUsuario);
@@ -33,6 +44,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Deletar Tipo-Usuario",
+            Description = "Este EndPoint delete um Tipo-Usuario"
+            )]
         public IActionResult Deletar(int id)
         {
             try
@@ -45,8 +60,12 @@ namespace SenaiNotes.Controllers
                 return NotFound();
             }
         }
-
+        
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Atualizar Tipo-Usuario",
+            Description = "Este EndPoint Atualiza um Tipo-Usuario"
+            )]
         public IActionResult Atualizar(int id, CadastrarTipoUsuarioDto tipoUsuarioAtualizado)
         {
             try
@@ -61,6 +80,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Listar por Id Tipo-Usuario",
+            Description = "Este EndPoint Lista por Id os Tipo-Usuario"
+            )]
         public IActionResult ListarPorId(int id)
         {
             ListarTipoUsuarioViewModel tipoUsuario = _tipoUsuario.BuscarPorId(id);

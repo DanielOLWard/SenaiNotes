@@ -7,12 +7,12 @@ namespace SenaiNotes.Interfaces
 {
     public interface INotaRepository
     {
-            List<ListarNotaViewModel> ListarTodos();
-            Nota BuscarPorId(int id);
-            void Cadastrar(CadastrarNotaDto nota);
-            void Atualizar(int id, CadastrarNotaDto nota);
-            void Deletar(int id);
-            void Arquivar(int id);
-        }
+        List<ListarNotaViewModel> ListarTodos();
+        Nota BuscarPorId(int id);
+        CadastrarNotaDto Cadastrar(CadastrarNotaDto nota);
+        void Atualizar(int id, CadastrarNotaDto nota);
+        void Deletar(int id);
+        Nota Arquivar(int id);
     }
+}
 

@@ -1,8 +1,13 @@
+using System.Diagnostics.Metrics;
+using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Linq;
 using SenaiNotes.Context;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Repositories;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +17,35 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
 
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(
+options =>
 {
     options.EnableAnnotations();
-});
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme.\r\n\r\n Enter 'Bearer'[space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                         new string[] {}
+                    }
+                });
+}
+);
 
 builder.Services.AddDbContext<SenaiNotesContext>();
 builder.Services.AddTransient<IUsuariorepository, UsuarioRepository>();
@@ -46,21 +76,21 @@ builder.Services.AddCors(
             name: "minhasOrigens",
             policy =>
             {
-                // TODO
-                policy.WithOrigins("http://localhost:7114");
+                policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173");
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
             });
     });
 
-builder.Services.AddAuthentication();
 
 var app = builder.Build();
 
 app.UseCors("minhasOrigens");
 
+
 app.UseSwagger();
-app.UseSwaggerUI(options => // Faz o Swagger abrir direto
+//app.UseSwaggerUI();
+app.UseSwaggerUI(options => // Faz o Swagger abrir direto 
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;

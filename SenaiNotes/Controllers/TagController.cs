@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SenaiNotes.Context;
 using SenaiNotes.Dto;
@@ -10,6 +11,7 @@ using System;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TagController : ControllerBase
     {
@@ -23,59 +25,75 @@ namespace SenaiNotes.Controllers
 
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Cadastra uma tag",
-            Description = "Este endpoint arquiva uma tag"
+            Summary = "Cadastrar Tag",
+            Description = "Este EndPoint Cadastra Tag"
             )]
-            public IActionResult CadastrarTag(TagDto tagDto)
-            {
-                _tagRepository.Cadastrar(tagDto);
-                return Created();
-            }
+        public IActionResult CadastrarTag(TagDto tagDto)
+        {
+            _tagRepository.Cadastrar(tagDto);
+            return Created();
+        }
 
-            [HttpGet]
-            public IActionResult BuscarPorId(int id)
+        [HttpGet]
+        [SwaggerOperation(
+            Summary = "Buscar Nome Por Id Tag",
+            Description = "Este EndPoint Buscar Nome por Id Tag"
+            )]
+        public IActionResult BuscarPorNomeId(int id, string nome)
+        {
+            Tag tag = _tagRepository.BuscarPorNomeId(id, nome);
+            if (tag == null)
             {
-                Tag tag = _tagRepository.BuscarPorID(id);
-                if (tag == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
+            return Ok(tag);
+        }
+
+        [HttpPut]
+        [SwaggerOperation(
+            Summary = "Atualizar Tag",
+            Description = "Este EndPoint Atualiza Tag"
+            )]
+        public IActionResult Atualizar(int id, Tag tag)
+        {
+            try
+            {
+                _tagRepository.Atualizar(id, tag);
+
                 return Ok(tag);
             }
-
-            [HttpPut]
-            public IActionResult Atualizar(int id, Tag tag)
+            catch (Exception ex)
             {
-                try
-                {
-                    _tagRepository.Atualizar(id, tag);
-
-                    return Ok(tag);
-                }
-                catch (Exception ex)
-                {
-                    return NotFound(ex);
-                }
-
+                return NotFound(ex);
             }
 
-            [HttpDelete]
-            public IActionResult Deletar(int id)
-            {
-                try
-                {
-                    _tagRepository.Deletar(id);
+        }
 
-                    // 204 - Deu certo!
-                    return NoContent();
-                }
-                // Caso de erro
-                catch (Exception ex)
-                {
-                    return NotFound("Tag não encontrado!");
-                }
+        [HttpDelete]
+        [SwaggerOperation(
+            Summary = "Deletar Tag",
+            Description = "Este EndPoint Deleta Tag"
+            )]
+        public IActionResult Deletar(int id)
+        {
+            try
+            {
+                _tagRepository.Deletar(id);
+
+                // 204 - Deu certo!
+                return NoContent();
             }
+            // Caso de erro
+            catch (Exception ex)
+            {
+                return NotFound("Tag não encontrado!");
+            }
+        }
         [HttpGet("usuario/{Id}")]
+        [SwaggerOperation(
+            Summary = "Buscar Tag por Id",
+            Description = "Este EndPoint busca Tag por Id"
+            )]
         public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
         {
             var tags = await _context.Tags
@@ -85,4 +103,4 @@ namespace SenaiNotes.Controllers
             return Ok(tags);
         }
     }
-   }
+}

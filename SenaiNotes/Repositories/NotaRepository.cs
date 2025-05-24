@@ -10,9 +10,12 @@ namespace SenaiNotes.Repositories
 {
     public class NotaRepository : INotaRepository
     {
+        private readonly ITagRepository _tagRepository;
         private readonly SenaiNotesContext _context;
-        public NotaRepository(SenaiNotesContext context)
+
+        public NotaRepository(SenaiNotesContext context, ITagRepository tagRepository)
         {
+            _tagRepository = tagRepository;
             _context = context;
         }
         public void Atualizar(int id, CadastrarNotaDto nota)
@@ -25,7 +28,6 @@ namespace SenaiNotes.Repositories
             }
             notaEncontrado.Titulo = nota.Titulo;
             notaEncontrado.ConteudoNotas = nota.ConteudoNotas;
-            notaEncontrado.Arquivado = nota.Arquivado;  
 
             _context.SaveChanges();
         }
@@ -33,40 +35,76 @@ namespace SenaiNotes.Repositories
         {
             //Qualquer metodo que vai me trazer apenas 1 cliente 
             //First or Default
-
-            //// Sem Id na Tag
-            //var tags = _context.Tags.Include(t => t.TagNota).ThenInclude(ta => ta.Notas).ThenInclude(n => n.Usuario).FirstOrDefault(t => t.TagsId == id);
-
-            //var idUsuario = tags.TagNota.First().Notas.Usuario.UsuarioId;
-
-
-            //// Com Id na Tag
-            //var id = _context.Tags.FirstOrDefault(t => t.TagsId == id).UsuarioId;
-
             return _context.Notas.FirstOrDefault(n => n.NotasId == id);
         }
-
-        public void Cadastrar(CadastrarNotaDto notaDto)
+        public CadastrarNotaDto Cadastrar(CadastrarNotaDto notaDto)
         {
-            var nota = new Nota
+            // 1 - Percorrer a Lista de Tags
+            // 1.1 - Essa Tag ja existe?
+            // 1.2 - Pegar o Id dela 
+            // 1.2 - Cadastrar a Tag, e pegar o Id
+
+            List<int> idTags = new List<int>();
+
+            foreach (var item in notaDto.Tags) // Percorro a lista de Tags
+            {
+                // Procuro se a Tag existe
+                var tag = _tagRepository.BuscarPorNomeId(notaDto.UsuarioId, item);
+                // Caso nao exista eu crio uma
+                if (tag == null)
+                {
+                    tag = new Tag
+                    {
+                        NomeTag = item,
+                        UsuarioId = notaDto.UsuarioId,
+                    };
+                    _context.Add(tag);
+                    _context.SaveChanges();
+                }
+                idTags.Add(tag.TagsId);
+            }
+
+            // Cadastrar Nota
+            var novaNota = new Nota
             {
                 Titulo = notaDto.Titulo,
                 ConteudoNotas = notaDto.ConteudoNotas,
-                UsuarioId = notaDto.UsuarioId,
+                Lixeira = false,
                 Arquivado = false,
+                Imagem = notaDto.Imagem,
+                UsuarioId = notaDto.UsuarioId
             };
-            _context.Notas.Add(nota);
+            _context.Add(novaNota);
             _context.SaveChanges();
 
+            // Cadastrar a TagNota
+            foreach (var id in idTags)
+            {
+                var tagNota = new TagNota
+                {
+                    NotasId = novaNota.NotasId,
+                    TagsId = id
+                };
+                _context.Add(tagNota);
+                _context.SaveChanges();
+            }
+            return notaDto;
         }
         public void Deletar(int id)
         {
-            var notaEncontrado = _context.Notas.FirstOrDefault(n => n.NotasId == id); // Encontrar quem eu quero deletar
-            if (notaEncontrado == null)
+            var notaEncontrada = _context.Notas
+                .Include(ta => ta.TagNota)
+                .FirstOrDefault(n => n.NotasId == id); // Encontrar quem eu quero deletar
+            if (notaEncontrada == null)
             {
-                throw new Exception("Nota nao encontrada");
+                throw new ArgumentNullException("Nota nao encontrada");
             }
-            _context.Notas.Remove(notaEncontrado);
+
+            if (notaEncontrada.TagNota.Any() == true)
+            {
+                _context.TagNotas.RemoveRange(notaEncontrada.TagNota);
+            }
+            _context.Notas.Remove(notaEncontrada);
             _context.SaveChanges();
         }
 
@@ -74,7 +112,7 @@ namespace SenaiNotes.Repositories
         {
             var notas = _context.Notas
                 .Include(n => n.TagNota)
-                .ThenInclude(ta => ta.TagNotasId)
+                .ThenInclude(tn => tn.Tags)
                 .Select(n => new ListarNotaViewModel
                 {
                     NotasId = n.NotasId,
@@ -84,25 +122,27 @@ namespace SenaiNotes.Repositories
                     Arquivado = n.Arquivado,
                     Imagem = n.Imagem,
                     UsuarioId = n.UsuarioId,
-                    TagsId = n.TagNota.Select(ta => new TagViewModel
+                    TagsId = n.TagNota.Select(tn => new TagViewModel
                     {
-                        TagsId = ta.Tags.TagsId,
-                        NomeTag = ta.Tags.NomeTag
+                        TagsId = tn.Tags.TagsId,
+                        NomeTag = tn.Tags.NomeTag
                     }).ToList()
                 })
                 .ToList();  
 
                 return notas;
         }
-        public void Arquivar(int id)
+        public Nota Arquivar(int id)
         {
-            var notaArquivada = _context.Notas.Find(id);
-            if (notaArquivada != null)
-            {
-               notaArquivada.Arquivado = !notaArquivada.Arquivado;
-                _context.SaveChanges();
+            var nota = _context.Notas.Find(id);
 
-            }
+            if (nota == null) return null;
+
+            nota.Arquivado = !nota.Arquivado;
+
+            _context.SaveChanges();
+
+            return nota;
         }
     }
 }
