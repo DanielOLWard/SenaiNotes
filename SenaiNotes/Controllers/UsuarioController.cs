@@ -71,7 +71,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult ListarPorId (int id)
+        public IActionResult ListarPorId(int id)
         {
             ListarusuarioViewModel usuario = _usuarioRepository.BuscarPorId(id);
 
@@ -81,15 +81,28 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login (LoginDto login)
+        public IActionResult Login(LoginDto login)
         {
             var usuario = _usuarioRepository.Login(login.Email, login.Senha);
 
             if (usuario == null) return Unauthorized("Email ou Senha invalidos");
 
             var tokenService = new TokenService();
-
-            return Ok("Login efetuado com Sucesso!!");
+            var token = tokenService.GerarToken(usuario.Email);
+            var viewModel = new ListarusuarioViewModel
+            {
+                UsuarioId = usuario.UsuarioId,
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                Telefone = usuario.Telefone,
+                DataCadastro = usuario.DataCadastro,
+                TipoUsuarioId = usuario.TipoUsuarioId,
+            };
+            return Ok(new
+            {
+                token,
+                usuario = viewModel
+            });
         }
     }
 }

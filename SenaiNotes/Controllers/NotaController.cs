@@ -20,6 +20,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Lista notas por ID",
+            Description = "Este endpoint Lista uma Nota com base no ID fornecido"
+            )]
         public IActionResult ListarPorId(int id)
         {
             Nota nota = _Notarepository.BuscarPorId(id);
@@ -31,6 +35,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = "Lista todas as Notas",
+            Description = "Este endpoint Lista todas as notas cadastradas"
+            )]
         public IActionResult ListarNotas()
         {
             return Ok(_Notarepository.ListarTodos());
@@ -48,6 +56,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = "Cadastra Nota",
+            Description = "Este endpoint cadastra uma nota e uma tag de acordo com os dados fornecidos pelo usario"
+            )]
         public IActionResult CadastrarNotas(CadastrarNotaDto nota)
         {
             _Notarepository.Cadastrar(nota);
@@ -55,6 +67,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Editar Nota",
+            Description = "Este endpoint edita uma Nota com base no ID fornecido"
+            )]
         public IActionResult Editar(int id, CadastrarNotaDto nota)
         {
             try
@@ -62,13 +78,17 @@ namespace SenaiNotes.Controllers
                 _Notarepository.Atualizar(id, nota);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ArgumentNullException)
             {
                 return NotFound("Nota nao encontrada!");
             }
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Deleta uma Nota",
+            Description = "Este endpoint Deleta uma Nota com base no ID fornecido"
+            )]
         public IActionResult Deletar(int id)
         {
             try
@@ -77,7 +97,7 @@ namespace SenaiNotes.Controllers
                 return NoContent();
             }
 
-            catch (Exception ex)
+            catch (ArgumentNullException)
             {
                 return NotFound("Nota nao encontrada!");
             }
