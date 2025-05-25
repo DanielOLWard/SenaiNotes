@@ -27,16 +27,6 @@ namespace SenaiNotes.Controllers
             _tagNotasRepository = tagNotaRepository;
         }
 
-        [HttpGet]
-        [SwaggerOperation(
-           Summary = "Listar todas as TagNota",
-           Description = "Este EndPoint lista todas as TagNota"
-           )]
-        public IActionResult ListarTagNota()
-        {
-            return Ok(_tagNotasRepository.ListarTodos());
-        }
-
         [HttpPost]
         [SwaggerOperation(
             Summary = "Cadastra uma TagNota",
@@ -49,10 +39,20 @@ namespace SenaiNotes.Controllers
             return Created();
         }
 
+        [HttpGet]
+        [SwaggerOperation(
+           Summary = "Listar todas as TagNotas",
+           Description = "Este EndPoint lista todas as TagNotas"
+           )]
+        public IActionResult ListarTagNota()
+        {
+            return Ok(_tagNotasRepository.ListarTodos());
+        }
+
         [HttpDelete("{id}")]
         [SwaggerOperation(
-           Summary = "Deletar TagNota",
-           Description = "Este EndPoint delete uma TagNota"
+           Summary = "Deletar uma TagNota",
+           Description = "Este EndPoint deleta uma TagNota pelo Id Fornecido"
            )]
         public IActionResult Deletar(int id)
         {
@@ -70,7 +70,7 @@ namespace SenaiNotes.Controllers
         [HttpPut("{id}")]
         [SwaggerOperation(
            Summary = "Atualizar TagNota",
-           Description = "Este EndPoint Atualiza uma TagNota"
+           Description = "Este EndPoint Atualiza uma tagNota pelo Id Fornecido"
            )]
         public IActionResult AtualizarTagNota (int id, TagNotaDto tagNota)
         {

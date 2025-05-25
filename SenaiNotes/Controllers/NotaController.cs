@@ -23,8 +23,8 @@ namespace SenaiNotes.Controllers
 
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Cadastra Nota",
-            Description = "Este endpoint cadastra uma nota e uma tag de acordo com os dados fornecidos pelo usario"
+            Summary = "Cadastra uma Nota",
+            Description = "Este EndPoint Cadastra uma Nota"
             )]
         public IActionResult CadastrarNotas(CadastrarNotaDto nota)
         {
@@ -34,9 +34,9 @@ namespace SenaiNotes.Controllers
 
         [HttpGet]
         [SwaggerOperation(
-          Summary = "Lista todas as Notas",
-          Description = "Este endpoint Lista todas as notas cadastradas"
-          )]
+           Summary = "Listar todas as Notas",
+           Description = "Este EndPoint lista todas as Notas"
+           )]
         public IActionResult ListarNotas()
         {
             return Ok(_Notarepository.ListarTodos());
@@ -44,9 +44,9 @@ namespace SenaiNotes.Controllers
 
         [HttpDelete("{id}")]
         [SwaggerOperation(
-            Summary = "Deleta uma Nota",
-            Description = "Este endpoint Deleta uma Nota com base no ID fornecido"
-            )]
+           Summary = "Deletar uma Nota",
+           Description = "Este EndPoint deleta uma Nota pelo Id Fornecido"
+           )]
         public IActionResult Deletar(int id)
         {
             try
@@ -63,9 +63,9 @@ namespace SenaiNotes.Controllers
 
         [HttpPut("{id}")]
         [SwaggerOperation(
-            Summary = "Editar Nota",
-            Description = "Este endpoint edita uma Nota com base no ID fornecido"
-            )]
+           Summary = "Atualizar Nota",
+           Description = "Este EndPoint Atualiza uma Nota pelo Id Fornecido"
+           )]
         public IActionResult Editar(int id, CadastrarNotaDto nota)
         {
             try
@@ -81,8 +81,8 @@ namespace SenaiNotes.Controllers
 
         [HttpGet("{id}")]
         [SwaggerOperation(
-            Summary = "Lista notas por ID",
-            Description = "Este endpoint Lista uma Nota com base no ID fornecido"
+            Summary = "Lista uma Nota pelo Id Informado",
+            Description = "Este EndPoint lista uma Nota de acordo com o Id informado"
             )]
         public IActionResult ListarPorId(int id)
         {
@@ -94,7 +94,7 @@ namespace SenaiNotes.Controllers
             return Ok(nota);
         }
 
-        [HttpPatch("/arquivar{id}/nota")]
+        [HttpPatch("Arquivar/{id}")]
         [SwaggerOperation(
             Summary = "Arquiva uma Nota",
             Description = "Este endpoint arquiva uma Nota com base no ID fornecido"

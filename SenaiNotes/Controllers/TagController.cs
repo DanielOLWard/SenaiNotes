@@ -25,16 +25,6 @@ namespace SenaiNotes.Controllers
             _tagRepository = tagRepository;
         }
 
-        [HttpGet]
-        [SwaggerOperation(
-           Summary = "Listar todas as Tags",
-           Description = "Este EndPoint lista todas as Tags"
-           )]
-        public IActionResult ListarTag()
-        {
-            return Ok(_tagRepository.ListarTodos());
-        }
-
         [HttpPost]
         [SwaggerOperation(
             Summary = "Cadastra uma Tag",
@@ -47,10 +37,20 @@ namespace SenaiNotes.Controllers
             return Created();
         }
 
+        [HttpGet]
+        [SwaggerOperation(
+           Summary = "Listar todas as Tags",
+           Description = "Este EndPoint lista todas as Tags"
+           )]
+        public IActionResult ListarTag()
+        {
+            return Ok(_tagRepository.ListarTodos());
+        }
+
         [HttpDelete("{id}")]
         [SwaggerOperation(
-           Summary = "Deletar Tag",
-           Description = "Este EndPoint delete uma Tag"
+           Summary = "Deletar uma Tag",
+           Description = "Este EndPoint deleta uma Tag pelo Id Fornecido"
            )]
         public IActionResult Deletar(int id)
         {
@@ -68,7 +68,7 @@ namespace SenaiNotes.Controllers
         [HttpPut("{id}")]
         [SwaggerOperation(
            Summary = "Atualizar Tag",
-           Description = "Este EndPoint Atualiza uma tag"
+           Description = "Este EndPoint Atualiza uma Tag pelo Id Fornecido"
            )]
         public IActionResult Atualizar (int id, TagDto tag)
         {
@@ -85,7 +85,7 @@ namespace SenaiNotes.Controllers
 
         [HttpGet("{id}")]
         [SwaggerOperation(
-            Summary = "Lista uma pelo Id Informado",
+            Summary = "Lista uma Tag pelo Id Informado",
             Description = "Este EndPoint lista uma Tag de acordo com o Id informado"
             )]
         public IActionResult ListarPorId(int id)
