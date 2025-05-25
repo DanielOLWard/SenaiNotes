@@ -3,6 +3,7 @@ using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.ViewModel;
 using System.Linq;
 
 namespace SenaiNotes.Repositories
@@ -18,49 +19,61 @@ namespace SenaiNotes.Repositories
 
         public void Atualizar(int id, TagNotaDto tagNota)
         {
-            var TagNotas = _context.Tags.FirstOrDefault(t => t.TagsId == id);
-            if (TagNotas == null)
+            var tagNotasEncontrada = _context.TagNotas.Find(id);
+
+            if (tagNotasEncontrada == null) throw new ArgumentException();
+
+            tagNotasEncontrada.NotasId = tagNota.NotasId;
+            tagNotasEncontrada.TagsId = tagNota.TagsId;
+
+            _context.SaveChanges();
+        }
+
+        public ListarTagNotasViewModel BuscarPorId(int id)
+        {
+            return _context.TagNotas.Select(tn => new ListarTagNotasViewModel
             {
-                throw new ArgumentNullException("Tag nao encontrado");
-            }
-            _context.SaveChanges();
-
+                TagNotasId = tn.TagNotasId,
+                TagsId = tn.TagsId,
+                NotasId = tn.NotasId
+            })
+            .FirstOrDefault(tn => tn.NotasId == id);
         }
 
-        public Tag BuscarPorId(int Id)
+        public void Cadastrar(TagNotaDto tagNota)
         {
-            return _context.Tags.FirstOrDefault(t => t.TagsId == Id);
-        }
+            var tagNotaCadastrada = new TagNota()
+            {
+                TagsId = tagNota.NotasId,
+                NotasId = tagNota.NotasId
+            };
 
-     
-        public void Cadastrar(TagNotaDto tagN)
-        {
-            var notaTag=0;
-        }
+            _context.Add(tagNotaCadastrada);
 
-        public void Cadastrar(TagDto tagN)
-        {
-            _context.AddAsync(tagN);
-            _context.SaveChanges();
-        }
-
-        public void CadastrarTag(TagNotaDto cadastrarTagNotas)
-        {
-            _context.AddAsync(cadastrarTagNotas);
             _context.SaveChanges();
         }
 
         public void Deletar(int id)
         {
-            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.TagsId == id);
+            var tagNotaEncontrada = _context.TagNotas.Find(id);
 
-            if (TagEncontrado != null)
-            {
-                throw new ArgumentNullException("Tag nao encontrado");
-            }
-            _context.Tags.Remove(TagEncontrado);
+            if (tagNotaEncontrada == null) throw new ArgumentNullException("TagNota não Encontrada!!");
+
+            _context.Remove(tagNotaEncontrada);
+
             _context.SaveChanges();
         }
 
+        public List<ListarTagNotasViewModel> ListarTodos()
+        {
+            return _context.TagNotas
+                .Select(tn => new ListarTagNotasViewModel
+                {
+                    TagNotasId = tn.TagNotasId,
+                    NotasId = tn.NotasId,
+                    TagsId = tn.TagsId
+                })
+                .ToList();
+        }
     }
 }

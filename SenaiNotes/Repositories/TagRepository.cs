@@ -70,7 +70,7 @@ namespace SenaiNotes.Repositories
             _context.SaveChanges();
         }
 
-        public List<TagViewModel > ListarTodos()
+        public List<TagViewModel> ListarTodos()
         {
             return _context.Tags
                 .Select(t => new TagViewModel
