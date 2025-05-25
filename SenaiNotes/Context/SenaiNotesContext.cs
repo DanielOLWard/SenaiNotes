@@ -11,7 +11,7 @@ public partial class SenaiNotesContext : DbContext
     {
     }
 
-    private IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
     public SenaiNotesContext(DbContextOptions<SenaiNotesContext> options, IConfiguration config)
         : base(options)
     {
@@ -32,8 +32,11 @@ public partial class SenaiNotesContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var conexao = _configuration.GetConnectionString("DefaultConecction");
-        optionsBuilder.UseSqlServer(conexao);
+        if (!optionsBuilder.IsConfigured)
+        {
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseSqlServer(connectionString);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -13,7 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class TagNotaController : ControllerBase
     {

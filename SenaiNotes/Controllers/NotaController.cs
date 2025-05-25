@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class NotaController : ControllerBase
     {
@@ -19,42 +19,6 @@ namespace SenaiNotes.Controllers
         public NotaController(INotaRepository Notarepository)
         {
             _Notarepository = Notarepository;
-        }
-
-        [HttpGet("{id}")]
-        [SwaggerOperation(
-            Summary = "Lista notas por ID",
-            Description = "Este endpoint Lista uma Nota com base no ID fornecido"
-            )]
-        public IActionResult ListarPorId(int id)
-        {
-            Nota nota = _Notarepository.BuscarPorId(id);
-            if (nota == null)
-            {
-                return NotFound();
-            }
-            return Ok(nota);
-        }
-
-        [HttpGet]
-        [SwaggerOperation(
-            Summary = "Lista todas as Notas",
-            Description = "Este endpoint Lista todas as notas cadastradas"
-            )]
-        public IActionResult ListarNotas()
-        {
-            return Ok(_Notarepository.ListarTodos());
-        }
-
-        [HttpPatch("/arquivar{id}/nota")]
-        [SwaggerOperation(
-            Summary = "Arquiva uma Nota",
-            Description = "Este endpoint arquiva uma Nota com base no ID fornecido"
-            )]
-        public IActionResult Arquivar(int id)
-        {
-            _Notarepository.Arquivar(id);
-            return NoContent();
         }
 
         [HttpPost]
@@ -68,22 +32,14 @@ namespace SenaiNotes.Controllers
             return Created();
         }
 
-        [HttpPut("{id}")]
+        [HttpGet]
         [SwaggerOperation(
-            Summary = "Editar Nota",
-            Description = "Este endpoint edita uma Nota com base no ID fornecido"
-            )]
-        public IActionResult Editar(int id, CadastrarNotaDto nota)
+          Summary = "Lista todas as Notas",
+          Description = "Este endpoint Lista todas as notas cadastradas"
+          )]
+        public IActionResult ListarNotas()
         {
-            try
-            {
-                _Notarepository.Atualizar(id, nota);
-                return Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return NotFound("Nota nao encontrada!");
-            }
+            return Ok(_Notarepository.ListarTodos());
         }
 
         [HttpDelete("{id}")]
@@ -104,6 +60,51 @@ namespace SenaiNotes.Controllers
                 return NotFound("Nota nao encontrada!");
             }
         }
+
+        [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = "Editar Nota",
+            Description = "Este endpoint edita uma Nota com base no ID fornecido"
+            )]
+        public IActionResult Editar(int id, CadastrarNotaDto nota)
+        {
+            try
+            {
+                _Notarepository.Atualizar(id, nota);
+                return Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return NotFound("Nota nao encontrada!");
+            }
+        }
+
+        [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Lista notas por ID",
+            Description = "Este endpoint Lista uma Nota com base no ID fornecido"
+            )]
+        public IActionResult ListarPorId(int id)
+        {
+            Nota nota = _Notarepository.BuscarPorId(id);
+            if (nota == null)
+            {
+                return NotFound();
+            }
+            return Ok(nota);
+        }
+
+        [HttpPatch("/arquivar{id}/nota")]
+        [SwaggerOperation(
+            Summary = "Arquiva uma Nota",
+            Description = "Este endpoint arquiva uma Nota com base no ID fornecido"
+            )]
+        public IActionResult Arquivar(int id)
+        {
+            _Notarepository.Arquivar(id);
+            return NoContent();
+        }
+
     } 
     
 }

@@ -8,6 +8,6 @@ namespace SenaiNotes.ViewModel
 
         public string NomeTag { get; set; } = null!;
 
-        public virtual Usuario? Usuario { get; set; }
+        public int? UsuarioId { get; set; }
     }
 }
