@@ -4,6 +4,7 @@ using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
 using SenaiNotes.ViewModel;
+using System.Collections.Generic;
 
 namespace SenaiNotes.Repositories
 {
@@ -11,6 +12,7 @@ namespace SenaiNotes.Repositories
     public class TagRepository : ITagRepository
     {
         private readonly SenaiNotesContext _context;
+
 
         public TagRepository(SenaiNotesContext context)
         {
@@ -45,6 +47,21 @@ namespace SenaiNotes.Repositories
 
             return tags;
         }
+
+        // Listar Tags por nomeParcial
+        public IList<Tag> BuscarTagsPorNomeParcial(string nomeParcial)
+        {
+            if (string.IsNullOrWhiteSpace(nomeParcial))
+            {
+                return new List<Tag>(); // Retorna uma lista vazia se o nome parcial for nulo ou vazio
+            }
+
+            return BuscarTagsPorNomeParcial(nomeParcial)
+                .Where(t => t.NomeTag.Contains(nomeParcial, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+
 
         public void Cadastrar(TagDto tag)
         {
@@ -81,6 +98,7 @@ namespace SenaiNotes.Repositories
                 })
                 .ToList();
         }
+
     }
 }
 

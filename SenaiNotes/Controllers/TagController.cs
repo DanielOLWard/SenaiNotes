@@ -9,6 +9,7 @@ using SenaiNotes.Repositories;
 using SenaiNotes.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
+using System.IO;
 
 namespace SenaiNotes.Controllers
 {
@@ -32,6 +33,33 @@ namespace SenaiNotes.Controllers
             )]
         public IActionResult Cadastrar(TagDto tag)
         {
+            if (tag.ArquivoTag != null)
+            {
+                // Extra - Verificar se o arquivo é uma imagem
+
+                // 1- Criar uma variavel - pasta de destino
+
+                var pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+                // 2- Salvar o arquivo
+
+                // Extra - Criar um nome personalizado para o Arquivo
+                var nomeArquivo = tag.ArquivoTag.FileName;
+
+                var caminhoCompleto = Path.Combine(pastaDestino, nomeArquivo); 
+
+                using (var stream = new FileStream(caminhoCompleto, FileMode.Create)) // FileMode - Manipulacao de arquivos
+                {
+                    tag.ArquivoTag.CopyTo(stream);
+                }
+
+                // 3- Guardar o local do arquivo no BD
+
+
+               
+            }
+
+           
             _tagRepository.Cadastrar(tag);
 
             return Created();
@@ -96,5 +124,6 @@ namespace SenaiNotes.Controllers
 
             return Ok(tag);
         }
+
     }
 }

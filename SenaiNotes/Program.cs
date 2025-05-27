@@ -105,9 +105,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
 var pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 
-if (!Directory.Exists(pastaDestino)) 
+if(!Directory.Exists(pastaDestino))
     Directory.CreateDirectory(pastaDestino);
 
 app.UseStaticFiles(
@@ -115,8 +116,6 @@ app.UseStaticFiles(
     {
         FileProvider = new PhysicalFileProvider(pastaDestino),
         RequestPath = "/image"
-    }
-);
-
+    });
 
 app.Run();
