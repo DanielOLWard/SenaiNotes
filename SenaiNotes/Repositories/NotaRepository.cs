@@ -145,5 +145,58 @@ namespace SenaiNotes.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public CadastrarNotaSemImagemDto CadastrarSemImagem(CadastrarNotaSemImagemDto notaDto)
+        {
+            // 1 - Percorrer a Lista de Tags
+            // 1.1 - Essa Tag ja existe?
+            // 1.2 - Pegar o Id dela 
+            // 1.2 - Cadastrar a Tag, e pegar o Id
+
+            List<int> idTags = new List<int>();
+
+            foreach (var item in notaDto.Tags) // Percorro a lista de Tags
+            {
+                // Procuro se a Tag existe
+                var tag = _tagRepository.BuscarPorNomeId(notaDto.UsuarioId, item);
+                // Caso nao exista eu crio uma
+                if (tag == null)
+                {
+                    tag = new Tag
+                    {
+                        NomeTag = item,
+                        UsuarioId = notaDto.UsuarioId,
+                    };
+                    _context.Add(tag);
+                    _context.SaveChanges();
+                }
+                idTags.Add(tag.TagsId);
+            }
+
+            // Cadastrar Nota
+            var novaNota = new Nota
+            {
+                Titulo = notaDto.Titulo,
+                ConteudoNotas = notaDto.ConteudoNotas,
+                Lixeira = false,
+                Arquivado = false,
+                UsuarioId = notaDto.UsuarioId
+            };
+            _context.Add(novaNota);
+            _context.SaveChanges();
+
+            // Cadastrar a TagNota
+            foreach (var id in idTags)
+            {
+                var tagNota = new TagNota
+                {
+                    NotasId = novaNota.NotasId,
+                    TagsId = id
+                };
+                _context.Add(tagNota);
+                _context.SaveChanges();
+            }
+            return notaDto;
+        }
     }
 }

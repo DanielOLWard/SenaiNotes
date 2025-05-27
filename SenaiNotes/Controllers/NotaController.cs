@@ -21,7 +21,7 @@ namespace SenaiNotes.Controllers
             _Notarepository = Notarepository;
         }
 
-        [HttpPost]
+        [HttpPost("comImagem")]
         [SwaggerOperation(
             Summary = "Cadastra uma Nota",
             Description = "Este EndPoint Cadastra uma Nota"
@@ -57,9 +57,9 @@ namespace SenaiNotes.Controllers
             Summary = "Cadastra uma Nota sem imagem",
             Description = "Este EndPoint Cadastra uma Nota"
             )]
-        public IActionResult CadastrarNotasSemImagem(CadastrarNotaDto nota)
+        public IActionResult CadastrarNotasSemImagem(CadastrarNotaSemImagemDto notaDto)
         {
-            _Notarepository.Cadastrar(nota);
+            _Notarepository.CadastrarSemImagem(notaDto);
             return Created();
         }
 

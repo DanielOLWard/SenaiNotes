@@ -7,7 +7,5 @@ namespace SenaiNotes.Dto
         public string NomeTag { get; set; } = null!;
 
         public int? UsuarioId { get; set; }
-
-        public IFormFile ArquivoTag {  get; set; }
     }
 }
