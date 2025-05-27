@@ -3,6 +3,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Linq;
@@ -103,5 +104,19 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+if (!Directory.Exists(pastaDestino)) 
+    Directory.CreateDirectory(pastaDestino);
+
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(pastaDestino),
+        RequestPath = "/image"
+    }
+);
+
 
 app.Run();
