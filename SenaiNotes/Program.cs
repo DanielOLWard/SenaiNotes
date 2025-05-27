@@ -1,6 +1,8 @@
 using System.Diagnostics.Metrics;
 using System.Reflection.Metadata;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Linq;
@@ -96,7 +98,7 @@ app.UseSwaggerUI(options => // Faz o Swagger abrir direto
     options.RoutePrefix = string.Empty;
 });
 
-app.UseAuthentication(); 
+app.UseAuthentication();
 
 app.UseAuthorization();
 

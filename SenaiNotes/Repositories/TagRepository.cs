@@ -18,22 +18,26 @@ namespace SenaiNotes.Repositories
             _context = context;
         }
 
-        public void Cadastrar(TagDto tag)
+        public void Atualizar(int id, TagDto tag)
         {
-            _context.AddAsync(tag);
+            var tagEncontrada = _context.Tags.Find(id);
+
+            if (tagEncontrada == null) throw new ArgumentException();
+
+            tagEncontrada.NomeTag = tag.NomeTag;
+
             _context.SaveChanges();
         }
 
-        public void Atualizar(int id, TagNota tagNota)
+        public TagViewModel BuscarPorId(int id)
         {
-            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.TagsId == id);
-            if (TagEncontrado == null)
+            return _context.Tags.Select(t => new TagViewModel
             {
-
-                throw new ArgumentNullException("Tag nao encontrado");
-            }
-            _context.SaveChanges();
-
+                TagsId = t.TagsId,
+                NomeTag = t.NomeTag,
+                UsuarioId = t.UsuarioId,
+            })
+            .FirstOrDefault(t => t.TagsId == id);
         }
 
         public Tag BuscarPorNomeId(int id, string nome)
@@ -43,38 +47,40 @@ namespace SenaiNotes.Repositories
             return tags;
         }
 
+        public void Cadastrar(TagDto tag)
+        {
+            var tagCadastrada = new Tag()
+            {
+                NomeTag = tag.NomeTag,
+                UsuarioId = tag.UsuarioId
+            };
+
+            _context.Tags.Add(tagCadastrada);
+
+            _context.SaveChanges();
+        }
+
         public void Deletar(int id)
         {
-            var TagEncontrado = _context.Tags.FirstOrDefault(t => t.TagsId == id);
+            var tagEncontrada = _context.Tags.Find(id);
 
-            if (TagEncontrado == null)
-            {
-                throw new ArgumentNullException("Tag nao encontrado");
-            }
-            _context.Tags.Remove(TagEncontrado);
+            if (tagEncontrada == null) throw new ArgumentNullException("Tag não encontrada!!");
+
+            _context.Remove(tagEncontrada);
+
             _context.SaveChanges();
         }
 
-        public List<Tag> ListarPorNome(string nome)
+        public List<TagViewModel> ListarTodos()
         {
-            var ListarTags = _context.Tags
+            return _context.Tags
+                .Select(t => new TagViewModel
+                {
+                    TagsId = t.TagsId,
+                    NomeTag = t.NomeTag,
+                    UsuarioId = t.UsuarioId,
+                })
                 .ToList();
-            return ListarTags;
-        }
-
-        public void Atualizar(int id, Tag tag)
-        {
-            var Tag = _context.Tags.FirstOrDefault(t => t.TagsId == id);
-            if (Tag == null)
-            {
-                throw new ArgumentNullException("Tag nao encontrado");
-            }
-            _context.SaveChanges();
-        }
-
-        public Tag BuscarPorUsuario(int Tag)
-        {
-            return _context.Tags.FirstOrDefault(t => t.TagsId == Tag);
         }
 
     }

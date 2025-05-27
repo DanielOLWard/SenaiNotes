@@ -22,22 +22,10 @@ namespace SenaiNotes.Controllers
             _usuarioRepository = usuariorepository;
         }
 
-        [HttpGet]
-        [Authorize]
-        [SwaggerOperation(
-            Summary = "Listar UsuarioAsync",
-            Description = "Este EndPoint Lista os UsuarioAsync"
-            )]
-        public async Task<IActionResult> ListarUsuariosAsync()
-        {
-            var usuario = await _usuarioRepository.ListarusuarioAsync();
-            return Ok(usuario);
-        }
-
         [HttpPost]
         [SwaggerOperation(
             Summary = "Cadastra um Usuario",
-            Description = "Este Cadastra fornece um usuario"
+            Description = "Este EndPoint Cadastra um Usuario"
             )]
         public IActionResult CadastrarUsuario(CadastrarUsuarioDto cadastrarUsuario)
         {
@@ -46,12 +34,24 @@ namespace SenaiNotes.Controllers
             return Created();
         }
 
-        [HttpDelete("{id}")]
-        [Authorize]
+        [HttpGet]
+        //[Authorize]
         [SwaggerOperation(
-            Summary = "Deletar Usuario",
-            Description = "Este EndPoint delete um Usuario"
-            )]
+           Summary = "Listar todos os Usuarios",
+           Description = "Este EndPoint lista todos os Usuarios"
+           )]
+        public async Task<IActionResult> ListarUsuariosAsync()
+        {
+            var usuario = await _usuarioRepository.ListarusuarioAsync();
+            return Ok(usuario);
+        }
+
+        [HttpDelete("{id}")]
+        //[Authorize]
+        [SwaggerOperation(
+           Summary = "Deletar um Usuario",
+           Description = "Este EndPoint deleta um Usuario pelo Id Fornecido"
+           )]
         public IActionResult Deletar(int id)
         {
             try
@@ -66,11 +66,11 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        //[Authorize]
         [SwaggerOperation(
-            Summary = "Atualizar Usuario",
-            Description = "Este EndPoint Atualiza um Usuario"
-            )]
+           Summary = "Atualizar Usuario",
+           Description = "Este EndPoint Atualiza um usuario pelo Id Fornecido"
+           )]
         public IActionResult AtualizarUsuario(int id, AtualizarusuarioDto usuarioAtualizado)
         {
             try
@@ -85,10 +85,10 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         [SwaggerOperation(
-            Summary = "Listar por Id Usuario",
-            Description = "Este EndPoint Lista por Id os Usuario"
+            Summary = "Lista um Usuario pelo Id Informado",
+            Description = "Este EndPoint lista um Usuario de acordo com o Id informado"
             )]
         public IActionResult ListarPorId (int id)
         {

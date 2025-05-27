@@ -1,15 +1,22 @@
 ﻿using SenaiNotes.Dto;
 using SenaiNotes.Models;
+using SenaiNotes.ViewModel;
 
 namespace SenaiNotes.Interfaces
 {
     public interface ITagRepository
     {
-        Tag BuscarPorNomeId (int id, string nome);
-        void Atualizar(int id, Tag tagNota);
+        List<TagViewModel> ListarTodos();
+
+        TagViewModel BuscarPorId(int id);
+
+        void Cadastrar(TagDto tag);
+
+        void Atualizar(int id, TagDto tag);
+
         void Deletar(int id);
-        void Cadastrar(TagDto Tag);
-        Tag BuscarPorUsuario(int tag);
+
+        Tag BuscarPorNomeId(int id, string nome);
 
     }
 }

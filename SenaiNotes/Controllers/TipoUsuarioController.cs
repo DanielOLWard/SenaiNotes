@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class TipoUsuarioController : ControllerBase
     {
@@ -21,21 +21,10 @@ namespace SenaiNotes.Controllers
             _tipoUsuario = tipoUsuarioRepository;
         }
 
-        [HttpGet]
-        [SwaggerOperation(
-            Summary = "Listar Tipo-Usuario",
-            Description = "Este EndPoint Lista os Tipo-Usuario"
-            )]
-        public async Task<IActionResult> ListarTipoUsuarioAsync()
-        {
-            var tipoUsuario = await _tipoUsuario.ListarTipoUsuariosuarioAsync();
-            return Ok(tipoUsuario);
-        }
-
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Cadastrar Tipo-Usuario",
-            Description = "Este EndPoint Cadastra um Tipo-Usuario"
+            Summary = "Cadastra um TipoUsuario",
+            Description = "Este EndPoint Cadastra um TipoUsuario"
             )]
         public IActionResult CadastrarTipoUsuario(CadastrarTipoUsuarioDto tipoUsuario)
         {
@@ -43,11 +32,22 @@ namespace SenaiNotes.Controllers
             return Created();
         }
 
+        [HttpGet]
+        [SwaggerOperation(
+           Summary = "Listar todos os TipoUsuarios",
+           Description = "Este EndPoint lista todos os TipoUsuarios"
+           )]
+        public async Task<IActionResult> ListarTipoUsuarioAsync()
+        {
+            var tipoUsuario = await _tipoUsuario.ListarTipoUsuariosuarioAsync();
+            return Ok(tipoUsuario);
+        }
+
         [HttpDelete("{id}")]
         [SwaggerOperation(
-            Summary = "Deletar Tipo-Usuario",
-            Description = "Este EndPoint delete um Tipo-Usuario"
-            )]
+           Summary = "Deletar um TipoUsuario",
+           Description = "Este EndPoint deleta um TipoUsuario pelo Id Fornecido"
+           )]
         public IActionResult Deletar(int id)
         {
             try
@@ -63,9 +63,9 @@ namespace SenaiNotes.Controllers
         
         [HttpPut("{id}")]
         [SwaggerOperation(
-            Summary = "Atualizar Tipo-Usuario",
-            Description = "Este EndPoint Atualiza um Tipo-Usuario"
-            )]
+           Summary = "Atualizar Tag",
+           Description = "Este EndPoint Atualiza um Usuario pelo Id Fornecido"
+           )]
         public IActionResult Atualizar(int id, CadastrarTipoUsuarioDto tipoUsuarioAtualizado)
         {
             try
@@ -81,8 +81,8 @@ namespace SenaiNotes.Controllers
 
         [HttpGet("{id}")]
         [SwaggerOperation(
-            Summary = "Listar por Id Tipo-Usuario",
-            Description = "Este EndPoint Lista por Id os Tipo-Usuario"
+            Summary = "Lista um TipoUsuario pelo Id Informado",
+            Description = "Este EndPoint lista um TipoUsuario de acordo com o Id informado"
             )]
         public IActionResult ListarPorId(int id)
         {

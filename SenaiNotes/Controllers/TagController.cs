@@ -5,13 +5,15 @@ using SenaiNotes.Context;
 using SenaiNotes.Dto;
 using SenaiNotes.Interfaces;
 using SenaiNotes.Models;
+using SenaiNotes.Repositories;
+using SenaiNotes.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class TagController : ControllerBase
     {
@@ -25,82 +27,74 @@ namespace SenaiNotes.Controllers
 
         [HttpPost]
         [SwaggerOperation(
-            Summary = "Cadastrar Tag",
-            Description = "Este EndPoint Cadastra Tag"
+            Summary = "Cadastra uma Tag",
+            Description = "Este EndPoint Cadastra uma Tag"
             )]
-        public IActionResult CadastrarTag(TagDto tagDto)
+        public IActionResult Cadastrar(TagDto tag)
         {
-            _tagRepository.Cadastrar(tagDto);
+            _tagRepository.Cadastrar(tag);
+
             return Created();
         }
 
         [HttpGet]
         [SwaggerOperation(
-            Summary = "Buscar Nome Por Id Tag",
-            Description = "Este EndPoint Buscar Nome por Id Tag"
-            )]
-        public IActionResult BuscarPorNomeId(int id, string nome)
+           Summary = "Listar todas as Tags",
+           Description = "Este EndPoint lista todas as Tags"
+           )]
+        public IActionResult ListarTag()
         {
-            Tag tag = _tagRepository.BuscarPorNomeId(id, nome);
-            if (tag == null)
-            {
-                return NotFound();
-            }
-            return Ok(tag);
+            return Ok(_tagRepository.ListarTodos());
         }
 
-        [HttpPut]
+        [HttpDelete("{id}")]
         [SwaggerOperation(
-            Summary = "Atualizar Tag",
-            Description = "Este EndPoint Atualiza Tag"
-            )]
-        public IActionResult Atualizar(int id, Tag tag)
-        {
-            try
-            {
-                _tagRepository.Atualizar(id, tag);
-
-                return Ok(tag);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex);
-            }
-
-        }
-
-        [HttpDelete]
-        [SwaggerOperation(
-            Summary = "Deletar Tag",
-            Description = "Este EndPoint Deleta Tag"
-            )]
+           Summary = "Deletar uma Tag",
+           Description = "Este EndPoint deleta uma Tag pelo Id Fornecido"
+           )]
         public IActionResult Deletar(int id)
         {
             try
             {
                 _tagRepository.Deletar(id);
-
-                // 204 - Deu certo!
                 return NoContent();
             }
-            // Caso de erro
-            catch (Exception ex)
+            catch (ArgumentException)
             {
-                return NotFound("Tag não encontrado!");
+                return NotFound();
             }
         }
-        [HttpGet("usuario/{Id}")]
-        [SwaggerOperation(
-            Summary = "Buscar Tag por Id",
-            Description = "Este EndPoint busca Tag por Id"
-            )]
-        public async Task<ActionResult<IEnumerable<Tag>>> GetTagsPorUsuario(int Id)
-        {
-            var tags = await _context.Tags
-                .Where(t => t.TagsId == Id)
-                .ToListAsync();
 
-            return Ok(tags);
+        [HttpPut("{id}")]
+        [SwaggerOperation(
+           Summary = "Atualizar Tag",
+           Description = "Este EndPoint Atualiza uma Tag pelo Id Fornecido"
+           )]
+        public IActionResult Atualizar (int id, TagDto tag)
+        {
+            try
+            {
+                _tagRepository.Atualizar(id, tag);
+                return Ok(tag);
+            } 
+            catch (ArgumentNullException) 
+            {
+                return NotFound("Tag não Encontrada");
+            }
+        }
+
+        [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = "Lista uma Tag pelo Id Informado",
+            Description = "Este EndPoint lista uma Tag de acordo com o Id informado"
+            )]
+        public IActionResult ListarPorId(int id)
+        {
+            TagViewModel tag = _tagRepository.BuscarPorId(id);
+
+            if (tag == null) return NotFound("Tag não encontrada!!");
+
+            return Ok(tag);
         }
     }
 }
