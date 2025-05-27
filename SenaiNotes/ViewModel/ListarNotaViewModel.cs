@@ -6,11 +6,11 @@ namespace SenaiNotes.ViewModel
     {
         public int NotasId { get; set; }
 
+        public int UsuarioId { get; set; }
+
         public string Titulo { get; set; } = null!;
 
         public string? ConteudoNotas { get; set; }
-
-        public int UsuarioId { get; set; }
 
         public bool? Lixeira { get; set; }
 
@@ -19,7 +19,5 @@ namespace SenaiNotes.ViewModel
         public bool? Arquivado { get; set; }
 
         public List<TagViewModel> TagsId { get; set; }
-
-        public virtual Usuario? Usuario { get; set; }
     }
 }

@@ -95,15 +95,11 @@ namespace SenaiNotes.Repositories
             var notaEncontrada = _context.Notas
                 .Include(ta => ta.TagNota)
                 .FirstOrDefault(n => n.NotasId == id); // Encontrar quem eu quero deletar
-            if (notaEncontrada == null)
-            {
-                throw new ArgumentNullException("Nota nao encontrada");
-            }
 
-            if (notaEncontrada.TagNota.Any() == true)
-            {
-                _context.TagNotas.RemoveRange(notaEncontrada.TagNota);
-            }
+            if (notaEncontrada == null) throw new ArgumentNullException("Nota nao encontrada");
+
+            if (notaEncontrada.TagNota.Any() == true) _context.TagNotas.RemoveRange(notaEncontrada.TagNota);
+
             _context.Notas.Remove(notaEncontrada);
             _context.SaveChanges();
         }

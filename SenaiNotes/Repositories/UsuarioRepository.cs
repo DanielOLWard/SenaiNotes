@@ -52,6 +52,23 @@ namespace SenaiNotes.Repositories
                 .FirstOrDefault(u => u.UsuarioId == id);
         }
 
+        public List<ListarusuarioViewModel> BuscarPorNomeParcial(string nomeParcial)
+        {
+            //throw new NotImplementedException();
+            return _context.Usuarios
+                .Select(u => new ListarusuarioViewModel
+                {
+                    UsuarioId = u.UsuarioId,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    Telefone = u.Telefone,
+                    DataCadastro = u.DataCadastro,
+                    TipoUsuarioId = u.TipoUsuarioId,
+                })
+                .Where(u => u.Nome.Contains(nomeParcial))
+                .ToList();
+        }
+
         public void Cadastrar(CadastrarUsuarioDto usuarioDto)
         {
             var passwordService = new PasswordService();

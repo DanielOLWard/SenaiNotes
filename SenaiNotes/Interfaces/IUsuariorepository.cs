@@ -10,6 +10,8 @@ namespace SenaiNotes.Interfaces
 
         ListarusuarioViewModel BuscarPorId(int id);
 
+        public List<ListarusuarioViewModel> BuscarPorNomeParcial(string nomeParcial);
+
         Usuario Login(string email, string senha);
 
         void Cadastrar(CadastrarUsuarioDto usuarioDto);

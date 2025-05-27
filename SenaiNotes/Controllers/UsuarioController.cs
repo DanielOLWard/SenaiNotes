@@ -99,6 +99,21 @@ namespace SenaiNotes.Controllers
             return Ok(usuario);
         }
 
+        [HttpGet("nomeParcial/{nomeParcial}")]
+        //[Authorize]
+        [SwaggerOperation(
+            Summary = "Lista um Usuario pelo nomeParcial",
+            Description = "Este EndPoint lista um Usuario pelo nome parcial de acordo com o nome informado"
+            )]
+        public IActionResult ListarPorNomeParcial (string nomeParcial)
+        {
+            var usuario = _usuarioRepository.BuscarPorNomeParcial(nomeParcial);
+
+            if (usuario == null) return NotFound("Usuario nao encontrado!!");
+
+            return Ok(usuario);
+        }
+
         [HttpPost("login")]
         [SwaggerOperation(
             Summary = "Login Usuario",

@@ -78,7 +78,7 @@ builder.Services.AddCors(
             name: "minhasOrigens",
             policy =>
             {
-                policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173");
+                policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173", "https://senai-notes-5drq.vercel.app/");
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
             });
