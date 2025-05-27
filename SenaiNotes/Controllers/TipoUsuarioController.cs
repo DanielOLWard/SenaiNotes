@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class TipoUsuarioController : ControllerBase
     {
@@ -22,6 +22,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPost]
+
         [SwaggerOperation(
             Summary = "Cadastra um TipoUsuario",
             Description = "Este EndPoint Cadastra um TipoUsuario"

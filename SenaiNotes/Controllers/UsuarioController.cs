@@ -35,7 +35,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         [SwaggerOperation(
            Summary = "Listar todos os Usuarios",
            Description = "Este EndPoint lista todos os Usuarios"
@@ -47,7 +47,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize]
+        [Authorize]
         [SwaggerOperation(
            Summary = "Deletar um Usuario",
            Description = "Este EndPoint deleta um Usuario pelo Id Fornecido"
@@ -66,7 +66,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize]
+        [Authorize]
         [SwaggerOperation(
            Summary = "Atualizar Usuario",
            Description = "Este EndPoint Atualiza um usuario pelo Id Fornecido"
@@ -85,7 +85,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Lista um Usuario pelo Id Informado",
             Description = "Este EndPoint lista um Usuario de acordo com o Id informado"
@@ -100,7 +100,7 @@ namespace SenaiNotes.Controllers
         }
 
         [HttpGet("nomeParcial/{nomeParcial}")]
-        //[Authorize]
+        [Authorize]
         [SwaggerOperation(
             Summary = "Lista um Usuario pelo nomeParcial",
             Description = "Este EndPoint lista um Usuario pelo nome parcial de acordo com o nome informado"

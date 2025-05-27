@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace SenaiNotes.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class NotaController : ControllerBase
     {
@@ -52,6 +52,17 @@ namespace SenaiNotes.Controllers
             _Notarepository.Cadastrar(nota);
             return Created();
         }
+        [HttpPost("semImagem")]
+        [SwaggerOperation(
+            Summary = "Cadastra uma Nota sem imagem",
+            Description = "Este EndPoint Cadastra uma Nota"
+            )]
+        public IActionResult CadastrarNotasSemImagem(CadastrarNotaDto nota)
+        {
+            _Notarepository.Cadastrar(nota);
+            return Created();
+        }
+
         [HttpGet]
         [SwaggerOperation(
            Summary = "Listar todas as Notas",
