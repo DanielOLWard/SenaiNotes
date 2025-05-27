@@ -140,5 +140,10 @@ namespace SenaiNotes.Repositories
 
             return nota;
         }
+
+        public ListarNotaViewModel BuscarNotaPorNomeParcial(string nome)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

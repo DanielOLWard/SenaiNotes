@@ -28,10 +28,30 @@ namespace SenaiNotes.Controllers
             )]
         public IActionResult CadastrarNotas(CadastrarNotaDto nota)
         {
+            //EXTRA - Verificar se o arquivo e uma imagem 
+            if (nota.ArquivoNotas != null)
+            {
+
+                //1 - Criar uma variavel - Pasta de destino
+                var pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+                //2 - Salvar o arquivo 
+                //EXTRA - Criar um nome personalizado para o arquivo
+                var nomeArquivo = nota.ArquivoNotas.FileName;
+
+                var caminhoCompleto = Path.Combine(pastaDestino, nomeArquivo);
+
+                using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+                {
+                    nota.ArquivoNotas.CopyTo(stream);   
+                }
+                //3 - Guardar o local do arquivo no bd
+                nota.Imagem = nomeArquivo;
+
+            }
             _Notarepository.Cadastrar(nota);
             return Created();
         }
-
         [HttpGet]
         [SwaggerOperation(
            Summary = "Listar todas as Notas",
@@ -41,6 +61,7 @@ namespace SenaiNotes.Controllers
         {
             return Ok(_Notarepository.ListarTodos());
         }
+
 
         [HttpDelete("{id}")]
         [SwaggerOperation(
@@ -105,8 +126,8 @@ namespace SenaiNotes.Controllers
             return NoContent();
         }
 
-    } 
-    
+    }
+
 }
 
 
